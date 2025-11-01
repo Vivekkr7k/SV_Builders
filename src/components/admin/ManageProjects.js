@@ -61,7 +61,21 @@ function ManageProjects() {
     description: '',
     floorPlan: '',
     locationMap: '',
-    gallery: ['', '', '', '', '']
+    gallery: ['', '', '', '', ''],
+    brochure: '',
+    pricelist: ''
+  });
+
+  const [fileUploads, setFileUploads] = useState({
+    imageFile: null,
+    brochureFile: null,
+    pricelistFile: null
+  });
+
+  const [uploadProgress, setUploadProgress] = useState({
+    image: false,
+    brochure: false,
+    pricelist: false
   });
 
   const handleOpenModal = (project = null) => {
@@ -81,7 +95,9 @@ function ManageProjects() {
         description: project.description || '',
         floorPlan: project.floorPlan || '',
         locationMap: project.locationMap || '',
-        gallery: project.gallery || ['', '', '', '', '']
+        gallery: project.gallery || ['', '', '', '', ''],
+        brochure: project.brochure || '',
+        pricelist: project.pricelist || ''
       });
     } else {
       setEditingProject(null);
@@ -99,9 +115,13 @@ function ManageProjects() {
         description: '',
         floorPlan: '',
         locationMap: '',
-        gallery: ['', '', '', '', '']
+        gallery: ['', '', '', '', ''],
+        brochure: '',
+        pricelist: ''
       });
     }
+    setFileUploads({ imageFile: null, brochureFile: null, pricelistFile: null });
+    setUploadProgress({ image: false, brochure: false, pricelist: false });
     setShowModal(true);
   };
 
@@ -128,6 +148,60 @@ function ManageProjects() {
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
+
+  const handleFileChange = async (e, fileType) => {
+    const file = e.target.files[0];
+    if (!file) return;
+
+    setFileUploads({ ...fileUploads, [fileType]: file });
+    setUploadProgress({ ...uploadProgress, [fileType.replace('File', '')]: true });
+
+    const formDataToSend = new FormData();
+    
+    try {
+      let endpoint = '';
+      let fieldName = '';
+      
+      if (fileType === 'imageFile') {
+        endpoint = 'http://localhost:5000/api/upload/image';
+        fieldName = 'image';
+      } else if (fileType === 'brochureFile') {
+        endpoint = 'http://localhost:5000/api/upload/brochure';
+        fieldName = 'brochure';
+      } else if (fileType === 'pricelistFile') {
+        endpoint = 'http://localhost:5000/api/upload/pricelist';
+        fieldName = 'pricelist';
+      }
+
+      formDataToSend.append(fieldName, file);
+
+      const response = await fetch(endpoint, {
+        method: 'POST',
+        body: formDataToSend
+      });
+
+      if (!response.ok) {
+        throw new Error('Upload failed');
+      }
+
+      const data = await response.json();
+      
+      if (fileType === 'imageFile') {
+        setFormData({ ...formData, image: `http://localhost:5000${data.path}` });
+      } else if (fileType === 'brochureFile') {
+        setFormData({ ...formData, brochure: `http://localhost:5000${data.path}` });
+      } else if (fileType === 'pricelistFile') {
+        setFormData({ ...formData, pricelist: `http://localhost:5000${data.path}` });
+      }
+
+      alert(`${fileType.replace('File', '')} uploaded successfully!`);
+    } catch (error) {
+      console.error('Upload error:', error);
+      alert(`Failed to upload ${fileType.replace('File', '')}. Please try again.`);
+    } finally {
+      setUploadProgress({ ...uploadProgress, [fileType.replace('File', '')]: false });
+    }
   };
 
   return (
@@ -220,15 +294,38 @@ function ManageProjects() {
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium mb-2 text-dark-charcoal dark:text-creamy-white">Image URL</label>
+                  <label className="block text-sm font-medium mb-2 text-dark-charcoal dark:text-creamy-white">Project Image</label>
                   <input
-                    type="url"
-                    name="image"
-                    value={formData.image}
-                    onChange={handleChange}
+                    type="file"
+                    accept="image/*"
+                    onChange={(e) => handleFileChange(e, 'imageFile')}
                     className="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-background-dark/50 text-dark-charcoal dark:text-creamy-white focus:outline-none focus:ring-2 focus:ring-primary"
-                    required
                   />
+                  {uploadProgress.image && (
+                    <p className="text-sm text-primary mt-1">Uploading...</p>
+                  )}
+                  {formData.image && (
+                    <div className="mt-2">
+                      <p className="text-xs text-gray-600 dark:text-gray-400 mb-1">Current Image:</p>
+                      <img src={formData.image} alt="Preview" className="h-20 w-auto rounded" />
+                      <input
+                        type="hidden"
+                        name="image"
+                        value={formData.image}
+                      />
+                    </div>
+                  )}
+                  <div className="mt-2">
+                    <label className="block text-xs font-medium mb-1 text-dark-charcoal dark:text-creamy-white">Or enter Image URL:</label>
+                    <input
+                      type="url"
+                      name="image"
+                      value={formData.image}
+                      onChange={handleChange}
+                      className="w-full px-3 py-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-background-dark/50 text-dark-charcoal dark:text-creamy-white focus:outline-none focus:ring-2 focus:ring-primary text-sm"
+                      placeholder="https://..."
+                    />
+                  </div>
                 </div>
 
                 <div className="grid grid-cols-2 gap-4">
@@ -356,6 +453,70 @@ function ManageProjects() {
                     className="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-background-dark/50 text-dark-charcoal dark:text-creamy-white focus:outline-none focus:ring-2 focus:ring-primary"
                     placeholder="https://..."
                   />
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium mb-2 text-dark-charcoal dark:text-creamy-white">Project Brochure (PDF/DOC/DOCX)</label>
+                  <input
+                    type="file"
+                    accept=".pdf,.doc,.docx,application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+                    onChange={(e) => handleFileChange(e, 'brochureFile')}
+                    className="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-background-dark/50 text-dark-charcoal dark:text-creamy-white focus:outline-none focus:ring-2 focus:ring-primary"
+                  />
+                  {uploadProgress.brochure && (
+                    <p className="text-sm text-primary mt-1">Uploading brochure...</p>
+                  )}
+                  {formData.brochure && (
+                    <div className="mt-2">
+                      <p className="text-xs text-gray-600 dark:text-gray-400 mb-1">Current Brochure:</p>
+                      <a 
+                        href={formData.brochure} 
+                        target="_blank" 
+                        rel="noopener noreferrer"
+                        className="text-primary hover:underline text-sm flex items-center gap-1"
+                      >
+                        <span className="material-symbols-outlined text-sm">description</span>
+                        View/Download Brochure
+                      </a>
+                      <input
+                        type="hidden"
+                        name="brochure"
+                        value={formData.brochure}
+                      />
+                    </div>
+                  )}
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium mb-2 text-dark-charcoal dark:text-creamy-white">Price List (PDF/DOC/DOCX)</label>
+                  <input
+                    type="file"
+                    accept=".pdf,.doc,.docx,application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+                    onChange={(e) => handleFileChange(e, 'pricelistFile')}
+                    className="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-background-dark/50 text-dark-charcoal dark:text-creamy-white focus:outline-none focus:ring-2 focus:ring-primary"
+                  />
+                  {uploadProgress.pricelist && (
+                    <p className="text-sm text-primary mt-1">Uploading price list...</p>
+                  )}
+                  {formData.pricelist && (
+                    <div className="mt-2">
+                      <p className="text-xs text-gray-600 dark:text-gray-400 mb-1">Current Price List:</p>
+                      <a 
+                        href={formData.pricelist} 
+                        target="_blank" 
+                        rel="noopener noreferrer"
+                        className="text-primary hover:underline text-sm flex items-center gap-1"
+                      >
+                        <span className="material-symbols-outlined text-sm">attach_money</span>
+                        View/Download Price List
+                      </a>
+                      <input
+                        type="hidden"
+                        name="pricelist"
+                        value={formData.pricelist}
+                      />
+                    </div>
+                  )}
                 </div>
 
                 <div>

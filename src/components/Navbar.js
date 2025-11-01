@@ -22,12 +22,12 @@ function Navbar() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
-          <Link to="/" className="flex items-center gap-4">
-            <div className="size-6 text-primary">
-              <svg fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                <path d="M12 1.5l-10 9v12h20v-12l-10-9zm0 2.3l8 7.2v9h-16v-9l8-7.2zm-4 9.5h8v2h-8v-2zm0 4h8v2h-8v-2z"></path>
-              </svg>
-            </div>
+          <Link to="/" className="flex items-center gap-3">
+            <img 
+              src="/logo.png" 
+              alt="SV Builders Logo" 
+              className="h-10 w-auto object-contain"
+            />
             <h2 className="text-xl font-bold leading-tight tracking-[-0.015em] font-display text-dark-charcoal dark:text-creamy-white">SV Builders</h2>
           </Link>
 
