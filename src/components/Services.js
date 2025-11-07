@@ -8,23 +8,16 @@ function Services() {
     {
       category: "RESIDENTIAL",
       title: "Residential Construction",
-      description: "From contemporary villas to classic estates, we craft bespoke homes that reflect your unique vision and lifestyle.",
+      description: "Comprehensive residential construction services including turnkey projects for individual home construction. From contemporary apartments to custom-designed villas, we deliver quality homes with modern amenities and timely completion across Bangalore.",
       image: "https://lh3.googleusercontent.com/aida-public/AB6AXuBD5vJLGIcsuHCV5ywisa96kIREXcJTme7l4-3ZgPMdI7cFCe4ukfuTssvZlFse30eQnblWk5n5Lsg_sd6utzdNQsJL117xcY5Sbu8RyM9xLUyEEBfUDZkxXb1H5KjgAkR0vB0dWNWl1u7cl-rsTbJ9h43XMr8uzRCVdUtJFIRnG9UJ2MS8-nsD90ma8UEdWQzbyriRVRbxCi5RD3BMnW11L9Iowmnef5E7br-MtyeqW5BKkhpRJGpViKA3lu334srAlgXlwSZqfns",
       alt: "A beautiful modern residential house with a large glass facade"
     },
     {
       category: "COMMERCIAL",
       title: "Commercial Construction",
-      description: "We deliver cutting-edge commercial spaces that are both functional and inspiring, designed to elevate your business.",
+      description: "We deliver cutting-edge commercial spaces that are both functional and inspiring, designed to elevate your business operations in Bangalore.",
       image: "https://lh3.googleusercontent.com/aida-public/AB6AXuCLpMSzQkzT_so-t9z7MCqZfcDfj1AyroWbVnmqS2fwoyEJsmS2k-WeFKZJzMl8WtE2oPBAbMwjtwlJ4cQVUj8Bm5qioEr_h1bMiUXqk6seF56uxPMVC2Vz2HyW0BGrGU6dSRm3_iPSZrIbOvR8oYPoMGh9joaN0FjYv2ikumOjzxZQ4RGJGJa8U0e9eCycQm2BPd1q-4V77MkVJpxlMhKc55Djxtqh4LNi9yqlk2U4FUjK_Djscfz_zECT2p-7mukyRtPvVzsjR3U",
       alt: "A modern office building with a sleek glass exterior"
-    },
-    {
-      category: "DESIGN & RENOVATION",
-      title: "Interior Design & Renovation",
-      description: "Transform your space with our expert interior design and renovation services, creating environments that inspire.",
-      image: "https://lh3.googleusercontent.com/aida-public/AB6AXuDxIAQlayIhSAAJRMijym_RbKQNOmuGxbGw0rHTSCXgNeJzCxf4jrfm2AYF6P0Tmrj41jrIDIaKx7-P1SyUL4O80yjkv77G3sIFH4UgpOn6iQP7NkslbOJLwqfalPqbmelZHrtQ7PlEp-4R9Ln2XZM40AVR1qKCH3FtYIL0wvE8_1f5JI9Ajzj0Q7HiElCoq7Bjs60VuwbG80aMmyvOzKPM7tEC6IhP4K6TTEDTYw-H-khO-Lq6HhDrGHLPg9LgJwRezbqG02HpR4g",
-      alt: "A stylish and modern living room interior"
     }
   ];
 

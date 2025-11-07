@@ -112,7 +112,7 @@ function Footer() {
 
           {/* Major Areas in Bangalore */}
           <div>
-            <h3 className="text-lg font-bold font-display text-dark-charcoal dark:text-creamy-white mb-3">Our Projects in Bangalore</h3>
+            <h3 className="text-lg font-bold font-display text-dark-charcoal dark:text-creamy-white mb-3">Our Services Areas</h3>
             <ul className="space-y-1">
               {bangaloreAreas.map((area, index) => (
                 <li key={index}>

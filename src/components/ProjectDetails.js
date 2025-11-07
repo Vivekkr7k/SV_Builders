@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useParams } from 'react-router-dom';
 import Navbar from './Navbar';
 import Footer from './Footer';
+import { projects } from '../data/projectsData';
 
 function ProjectDetails() {
   const { id } = useParams();
@@ -12,91 +13,18 @@ function ProjectDetails() {
     message: ''
   });
 
-  // Project data matching Home.js structure
-  const projects = {
-    1: {
-      id: 1,
-      title: "Sai Omkar Residency",
-      location: "HSR Layout, Bangalore",
-      area: "HSR Layout",
-      description: "Premium residential apartments in the heart of HSR Layout, featuring modern architecture, spacious 2 & 3 BHK units with world-class amenities. Located in one of Bangalore's most sought-after neighborhoods.",
-      status: "completed",
-      image: "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=1200&q=80",
-      amenities: ["Swimming Pool", "Clubhouse", "Gymnasium", "Landscaped Gardens", "Parking", "Security", "Power Backup"],
-      brochureUrl: "#",
-      bedrooms: "2, 3 BHK",
-      bathrooms: "2, 3",
-      price: "On Request",
-      propertyType: "Residential Apartments",
-      yearBuilt: "2023"
-    },
-    2: {
-      id: 2,
-      title: "Shri Balaji Residency",
-      location: "Koramangala, Bangalore",
-      area: "Koramangala",
-      description: "Elegant residential project in Koramangala offering 2, 3 & 4 BHK apartments. Features include premium finishes, security systems, and proximity to IT hubs, schools, and shopping centers.",
-      status: "completed",
-      image: "https://lh3.googleusercontent.com/aida-public/AB6AXuA8tACyec0xqLnYRXU3rGZsI54n9D97neDXRiaTRkgfnk8iNaSyoJ7GNtnuIRpKV8h-yqT8aFi5QAonhaoio9SZmMjR6e2ERWFXb2Pq1_-qZWUXOx5ZxuVNJb3rs-BUetZcpIo83j_Cl29Xkvrcb3lvWXbfigrz_ww88j0ygk4sVGbbCt0Xc479-0ZeUNf2KLkjJR3z1a16YGjRf7rpvvZNK026FLAaojEgW3v9fsUAdImRBsAvbu5y0m9uInwgp0TYrQaQEFDJe6Q",
-      amenities: ["Power Backup", "Security", "Lift", "Parking", "Water Supply", "Clubhouse"],
-      brochureUrl: "#",
-      bedrooms: "2, 3, 4 BHK",
-      bathrooms: "2, 3, 4",
-      price: "On Request",
-      propertyType: "Residential Apartments",
-      yearBuilt: "2022"
-    },
-    3: {
-      id: 3,
-      title: "SV Sri Balaji Residency",
-      location: "Whitefield, Bangalore",
-      area: "Whitefield",
-      description: "Ongoing premium residential development in Whitefield, featuring contemporary design and smart home features. Offering 2 & 3 BHK apartments with excellent connectivity to IT corridors.",
-      status: "ongoing",
-      image: "https://lh3.googleusercontent.com/aida-public/AB6AXuDRALEcFzR21B0uHsmR5vs_-CXdPB5KvS7VV4I3Ye3mYKaq7VFU9SF1ZOJlWmBhXZHYljRc1aN73iYLvE-RtzX2kV-8HK-IIsuMA1AWGEF6LutxFZD2VEv_jImY7OqPt942Pn3QolUjvUayJnQ-LlENhxY1lHQEzs7Q3oSjPcG_B2SvWNJ3QvbV1ssyFnHJdI5yPt6C0QLNGwjZALxJvMTj2Yi007VMzWcDLI7aUWyV0Qd5PBNDf3da3wH_Idm_ecm9j-O-8QehsaE",
-      amenities: ["Swimming Pool", "Clubhouse", "Children's Play Area", "Gym", "Landscaped Gardens", "Smart Home Features"],
-      brochureUrl: "#",
-      bedrooms: "2, 3 BHK",
-      bathrooms: "2, 3",
-      price: "On Request",
-      propertyType: "Residential Apartments",
-      completionDate: "2025"
-    },
-    4: {
-      id: 4,
-      title: "SV Giridhama Residency",
-      location: "Electronic City, Bangalore",
-      area: "Electronic City",
-      description: "Modern residential apartments under construction in Electronic City. Strategically located near tech parks, featuring 2, 3 & 4 BHK homes with premium amenities and excellent connectivity.",
-      status: "ongoing",
-      image: "https://lh3.googleusercontent.com/aida-public/AB6AXuApgaN2IG9WWZdl_4GE1TnrppxO7j84No00gG4eLOqmJt1ngXEYlfU2nlVJO39wXS5_n12Lof9px7cRlrjIUWtovP1kf4hG9a5aipnnEsBXlf-FSzGSZLqEIHJl9scyURlZw9P1GtWVwfkyCZ5ZM0Z2fjdkIaUAS49TZUhr8V0ZWrGrWo7rfpG9KBM2QRXyNrLFpYwD-wSKp8jpdwYYAAovU_vt4Sc3DADQxFgRmuk8EiSSbc29NJfFsUSxzHgXExyUIo88aj1gUF4",
-      amenities: ["Rooftop Garden", "Community Hall", "Gymnasium", "24/7 Security", "Parking", "Water Supply"],
-      brochureUrl: "#",
-      bedrooms: "2, 3, 4 BHK",
-      bathrooms: "2, 3, 4",
-      price: "On Request",
-      propertyType: "Residential Apartments",
-      completionDate: "2026"
-    },
-    5: {
-      id: 5,
-      title: "SV Royal Residency",
-      location: "Yelahanka, Bangalore",
-      area: "Yelahanka",
-      description: "Upcoming luxury residential project in Yelahanka featuring spacious 3 & 4 BHK apartments. Planned with premium amenities, green spaces, and modern infrastructure in a rapidly developing area of North Bangalore.",
-      status: "upcoming",
-      image: "https://lh3.googleusercontent.com/aida-public/AB6AXuCyQseEJqEPhXZd2f6Nv02ToeFOQYS8dyvgu4XFtWt8Dih7dfZw7UwwNm7ssKrRyI74K6XRAVvIrTL8GfNGwvWYiGIjTR5usj7AeiAIamjkiSSRT3SAp2VA1HlZwDm2AXhVJRKi1UV0LII31G2_1-foAOeIUXG3J0Lxk4Vu4znOGloUrB1rTn4jv0yntd0VWmoNvcERLnPQuxFAL_irEehFD7rU5CnmKVOIkH1dilFG03nC12CS34VBw3DvQ_U0vuGjJwV2Kgz4Xt0",
-      amenities: ["Swimming Pool", "Clubhouse", "Multi-purpose Hall", "Jogging Track", "Green Spaces", "Gym"],
-      brochureUrl: "#",
-      bedrooms: "3, 4 BHK",
-      bathrooms: "3, 4",
-      price: "On Request",
-      propertyType: "Residential Apartments",
-      launchDate: "2024"
-    }
-  };
-
-  const project = projects[id] || projects[1];
+  // Find project by ID
+  const project = projects.find(p => p.id === parseInt(id)) || projects[0];
+  
+  // Set exactLocation from location if not already set
+  const exactLocation = project.exactLocation || project.location;
+  
+  // Use gallery images if available, otherwise use placeholder
+  const galleryImages = project.gallery && project.gallery.length > 0 
+    ? project.gallery 
+    : project.floorPlans2D && project.floorPlans2D.length > 0
+    ? project.floorPlans2D
+    : [];
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -114,8 +42,20 @@ function ProjectDetails() {
 
   const handleDownloadBrochure = (e) => {
     e.preventDefault();
-    // In a real application, this would download the actual brochure PDF
+    if (project.brochureUrl && project.brochureUrl !== '#') {
+      window.open(project.brochureUrl, '_blank');
+    } else {
     alert('Brochure download will be available soon. Please contact us for more details.');
+    }
+  };
+
+  const handleDownloadPriceList = (e) => {
+    e.preventDefault();
+    if (project.priceListUrl && project.priceListUrl !== '#') {
+      window.open(project.priceListUrl, '_blank');
+    } else {
+      alert('Price list will be available soon. Please contact us for more details.');
+    }
   };
 
   return (
@@ -150,46 +90,28 @@ function ProjectDetails() {
 
           <div className="px-4 md:px-10 lg:px-20 mx-auto max-w-7xl py-10 md:py-16">
             {/* Gallery Section */}
+            {galleryImages.length > 0 && (
             <div className="mb-16" id="gallery">
               <h2 className="text-3xl font-serif font-bold mb-8 text-center text-gray-800 dark:text-gray-200">Gallery</h2>
               <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                <div className="col-span-2 row-span-2 rounded-xl overflow-hidden">
-                  <img 
-                    alt={`${project.title} - Exterior view of residential building in ${project.area}, Bangalore`} 
+                  {galleryImages.slice(0, 5).map((img, index) => (
+                    <div 
+                      key={index}
+                      className={index === 0 ? "col-span-2 row-span-2 rounded-xl overflow-hidden" : "rounded-xl overflow-hidden"}
+                    >
+                      <img 
+                        alt={`${project.title} - ${index === 0 ? 'Exterior view' : 'Gallery image'} ${index + 1}`} 
                     className="w-full h-full object-cover transition-transform duration-300 hover:scale-105" 
-                    src="https://lh3.googleusercontent.com/aida-public/AB6AXuCzurAOmdzBWDx5MjGT2a9sHWFxFDM92itFxsMVXrd1OGITUA-bJlgqvLR1T4dwoGw3dpGR0lC8vIVxRouDeeXkm2_4-TNc3pvvHRcip0Qo8C0BsyHvxAsXkKO62cj_iqVNv-UHAGQYZcBz3LHYYrGG52LKMx6yfyAKVtgDfW1qpKcw4twLQper1fvGQ6OJw0gz60aCv4coYQSXc55LyNhUcRtoZxhQT9ds4rZ5VGe2h6bGRbQbuBrIGCzpdEpKLjMK-99aKXW5Ozk" 
+                        src={img}
+                        onError={(e) => {
+                          e.target.src = 'https://via.placeholder.com/400x300?text=Image+Loading';
+                        }}
                   />
                 </div>
-                <div className="rounded-xl overflow-hidden">
-                  <img 
-                    alt={`${project.title} - Spacious living room interior`} 
-                    className="w-full h-full object-cover transition-transform duration-300 hover:scale-105" 
-                    src="https://lh3.googleusercontent.com/aida-public/AB6AXuD3dX4VeG1v0jkhDGoaK2GxiCJMEdKoESYKjY8nnJhilxZyqoMFW8yW3QYZARj9kucrb1izPT9Q53oMi_p9iQwa4D2biRAEqH0TNpfymU7HABbL_nbK0-ZDk1xUr9ayeJkY0PeqouVLwp7iBaDWyioyXwh4u7fetml6iX2T-ca7cMvTn72rt4jEGQo_MGVaLomX2VVWAIg7hdMOfeSHmS5OAIReRmGcogc6_6eXMmqGSMpoDneKGo1YMlw0euAjsjAEUBCaoPg2Qno" 
-                  />
-                </div>
-                <div className="rounded-xl overflow-hidden">
-                  <img 
-                    alt={`${project.title} - Modern kitchen with premium finishes`} 
-                    className="w-full h-full object-cover transition-transform duration-300 hover:scale-105" 
-                    src="https://lh3.googleusercontent.com/aida-public/AB6AXuDaTItoIz1vtLM-pVok8YHTcB9YQY1ISxj9gK8U_C3fa0pkSRt2UuDBgFUp34jL2eL8DWlABaf6HT0bTyLebi36ZeP0_bMVYqraeohB7Xx1U1bEVoL9r6ZXOuyvA8hcjK2MYFQj_iKjReYkD8zENCAfLY2xhgXcEqkOdUyy_ZjC0lViV7qihBcZSTWFso23nqJ3GKLRue62eP689qYiF8jLw7gVgWdv5LZnTr2r_ft_2UNGeWnYGPwfVQIJqVjFExtFveKquZkmk9o" 
-                  />
-                </div>
-                <div className="rounded-xl overflow-hidden">
-                  <img 
-                    alt={`${project.title} - Elegant bedroom with large windows`} 
-                    className="w-full h-full object-cover transition-transform duration-300 hover:scale-105" 
-                    src="https://lh3.googleusercontent.com/aida-public/AB6AXuD35mVNuMxZ_iaWEngOnGhprk69pDdAPVj1ZsrKcWeYSONtxxXrlXBK8E2yD4A_fsrCeU6oHdxk8dTcLXvx2FQxpV6qM7m4gLGoKJSsJjBWXFdV3JhaRJvXoAEqRLqbHboCcJ8Ux-OmzZ82I4XeCXJIEMQWOY_fE9YboZbudQJCobokVj3Vx9UBgDsQyxEdaDFqcKTO8nukY-iyG8kqbvZYoHT74vahfmYIX_ewvRBwc70fAhp9Iy0wQQNgX6EvW3TBlDCQml8-O7I" 
-                  />
-                </div>
-                <div className="rounded-xl overflow-hidden">
-                  <img 
-                    alt={`${project.title} - Luxury bathroom with modern fixtures`} 
-                    className="w-full h-full object-cover transition-transform duration-300 hover:scale-105" 
-                    src="https://lh3.googleusercontent.com/aida-public/AB6AXuB3JHDOGtehXGCleOjr36R6zj6lqIOCO1hX-R3ss-DwhGbMd_jHbOBOYn21KXkf7m3r0JlzeB2eV99lygPHUVfpsCWyC5i22SOoQLxxAR1BcR988wuzdrMZKU6uYWmxZ4bDexTHIDX1KiKWStQtx1l2SeN4iqb_Y3z9kgF8xcUXzLPU0azA3k4wkX4UlCbAYSIvW4bFnlapVDowcDEMIXAVVDFzrTSI6A7Jw1deXr9RJgXPwmQAtyPXk46DJYvqRTlJCt0jjmP83q0" 
-                  />
+                  ))}
                 </div>
               </div>
-            </div>
+            )}
 
             {/* Property Details Section */}
             <div className="mb-16" id="features">
@@ -215,8 +137,8 @@ function ProjectDetails() {
                   <div className="flex items-start space-x-4">
                     <span className="material-symbols-outlined text-primary mt-1">king_bed</span>
                     <div>
-                      <p className="font-semibold text-gray-800 dark:text-gray-200">Bedrooms</p>
-                      <p className="text-gray-600 dark:text-gray-400">{project.bedrooms}</p>
+                      <p className="font-semibold text-gray-800 dark:text-gray-200">BHK Configuration</p>
+                      <p className="text-gray-600 dark:text-gray-400">{project.bhkConfig ? project.bhkConfig.join(", ") : project.bedrooms}</p>
                     </div>
                   </div>
                   <div className="flex items-start space-x-4">
@@ -231,6 +153,20 @@ function ProjectDetails() {
                     <div>
                       <p className="font-semibold text-gray-800 dark:text-gray-200">Price</p>
                       <p className="text-gray-600 dark:text-gray-400">{project.price}</p>
+                    </div>
+                  </div>
+                  <div className="flex items-start space-x-4">
+                    <span className="material-symbols-outlined text-primary mt-1">apartment</span>
+                    <div>
+                      <p className="font-semibold text-gray-800 dark:text-gray-200">Total Units</p>
+                      <p className="text-gray-600 dark:text-gray-400">{project.totalUnits || 'N/A'}</p>
+                    </div>
+                  </div>
+                  <div className="flex items-start space-x-4">
+                    <span className="material-symbols-outlined text-primary mt-1">home</span>
+                    <div>
+                      <p className="font-semibold text-gray-800 dark:text-gray-200">Number of Flats</p>
+                      <p className="text-gray-600 dark:text-gray-400">{project.numberOfFlats || 'N/A'}</p>
                     </div>
                   </div>
                   <div className="flex items-start space-x-4">
@@ -266,6 +202,34 @@ function ProjectDetails() {
               </div>
             </div>
 
+            {/* Nearby Hotspots Section */}
+            {project.nearbyHotspots && project.nearbyHotspots.length > 0 && (
+              <div className="mb-16" id="nearby-hotspots">
+                <h2 className="text-3xl font-serif font-bold mb-8 text-gray-800 dark:text-gray-200">Nearby Hotspots</h2>
+                <div className="bg-creamy-white dark:bg-gray-800 p-6 rounded-xl">
+                  <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
+                    {project.nearbyHotspots.map((hotspot, index) => (
+                      <div key={index} className="flex items-start gap-3 p-3 bg-white dark:bg-gray-700 rounded-lg">
+                        <span className="material-symbols-outlined text-primary mt-1">
+                          {hotspot.type === 'Transport' ? 'train' : 
+                           hotspot.type === 'Shopping' ? 'shopping_bag' :
+                           hotspot.type === 'Healthcare' ? 'local_hospital' :
+                           hotspot.type === 'Education' ? 'school' :
+                           hotspot.type === 'Business' ? 'business' :
+                           'place'}
+                        </span>
+                        <div>
+                          <p className="font-semibold text-gray-800 dark:text-gray-200">{hotspot.name}</p>
+                          <p className="text-sm text-gray-600 dark:text-gray-400">{hotspot.distance}</p>
+                          <p className="text-xs text-gray-500 dark:text-gray-500 mt-1">{hotspot.type}</p>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            )}
+
             {/* Download Brochure & Price List Section */}
             <div className="mb-16" id="download-section">
               <div className="bg-gradient-to-r from-primary/10 to-primary/5 dark:from-primary/20 dark:to-primary/10 p-8 md:p-12 rounded-2xl border-2 border-primary/20">
@@ -277,23 +241,24 @@ function ProjectDetails() {
                 </div>
                 
                 <div className="flex flex-col sm:flex-row gap-4 justify-center items-center max-w-2xl mx-auto">
-                  <button
-                    onClick={handleDownloadBrochure}
-                    className="w-full sm:w-auto flex items-center justify-center gap-2 px-8 py-4 bg-primary text-white font-bold rounded-lg hover:bg-primary/90 transition-all duration-300 shadow-lg hover:shadow-xl min-w-[220px]"
-                  >
-                    <span className="material-symbols-outlined">download</span>
-                    <span>Download Brochure</span>
-                  </button>
-                  <button
-                    onClick={(e) => {
-                      e.preventDefault();
-                      alert('Price list download will be available soon. Please contact us for current pricing.');
-                    }}
-                    className="w-full sm:w-auto flex items-center justify-center gap-2 px-8 py-4 bg-white dark:bg-gray-800 border-2 border-primary text-primary font-bold rounded-lg hover:bg-primary/10 dark:hover:bg-primary/20 transition-all duration-300 shadow-lg hover:shadow-xl min-w-[220px]"
-                  >
-                    <span className="material-symbols-outlined">attach_money</span>
-                    <span>Download Price List</span>
-                  </button>
+                  {project.brochureUrl && project.brochureUrl !== '#' && (
+                    <button
+                      onClick={handleDownloadBrochure}
+                      className="w-full sm:w-auto flex items-center justify-center gap-2 px-8 py-4 bg-primary text-white font-bold rounded-lg hover:bg-primary/90 transition-all duration-300 shadow-lg hover:shadow-xl min-w-[220px]"
+                    >
+                      <span className="material-symbols-outlined">download</span>
+                      <span>Download Brochure</span>
+                    </button>
+                  )}
+                  {project.priceListUrl && project.priceListUrl !== '#' && (
+                    <button
+                      onClick={handleDownloadPriceList}
+                      className="w-full sm:w-auto flex items-center justify-center gap-2 px-8 py-4 bg-primary/80 text-white font-bold rounded-lg hover:bg-primary/70 transition-all duration-300 shadow-lg hover:shadow-xl min-w-[220px]"
+                    >
+                      <span className="material-symbols-outlined">download</span>
+                      <span>Download Price List</span>
+                    </button>
+                  )}
                 </div>
 
                 <div className="mt-6 text-center">
@@ -305,46 +270,77 @@ function ProjectDetails() {
             </div>
 
             {/* Floor Plans Section */}
-            <div className="mb-16 text-center" id="floor-plans">
-              <h2 className="text-3xl font-serif font-bold mb-8 text-gray-800 dark:text-gray-200">Floor Plans</h2>
-              <div className="relative flex justify-center items-center p-8 bg-creamy-white dark:bg-gray-800 rounded-xl shadow-lg">
-                <img 
-                  alt={`${project.title} - Floor plan layout showing apartment configurations`} 
-                  className="max-w-full h-auto rounded-lg" 
-                  src="https://lh3.googleusercontent.com/aida-public/AB6AXuBVS3IukR36l6IXOkiVtG2wLZulfhPjoc54VNiDCPkGTdibYMPzZJrNF9VrCx85Vcarrh_N_uRPkGsnsbGR6VOQLqbHFu754TqpFafotau2ot1rIjSCJexvT5xqmfZZF-xNsym6ssByPoz2bTY-M2vwhrtY0N8dNjQUjE3iPQasitXaEkcKh8DM45EWckfs_M-_n1Avtjf8ImeeyZZG_hf8Uw2EYD47v4Buymsk4fTQQJxPE6_e70AagdjD_Xcvzc4ppOfqz3El-Mo" 
-                />
+            {(project.floorPlans2D?.length > 0 || project.floorPlans3D?.length > 0) && (
+              <div className="mb-16" id="floor-plans">
+                <h2 className="text-3xl font-serif font-bold mb-8 text-center text-gray-800 dark:text-gray-200">Floor Plans</h2>
+                
+                {project.floorPlans2D?.length > 0 && (
+                  <div className="mb-8">
+                    <h3 className="text-xl font-bold mb-4 text-gray-800 dark:text-gray-200">2D Floor Plans</h3>
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                      {project.floorPlans2D.map((plan, index) => (
+                        <div key={index} className="rounded-xl overflow-hidden shadow-lg bg-creamy-white dark:bg-gray-800 p-4">
+                          <img 
+                            alt={`${project.title} - 2D Floor Plan ${index + 1}`} 
+                            className="w-full h-auto rounded-lg" 
+                            src={plan}
+                            onError={(e) => {
+                              e.target.src = 'https://via.placeholder.com/400x300?text=Floor+Plan';
+                            }}
+                          />
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+                
+                {project.floorPlans3D?.length > 0 && (
+                  <div className="mb-8">
+                    <h3 className="text-xl font-bold mb-4 text-gray-800 dark:text-gray-200">3D Floor Plans</h3>
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                      {project.floorPlans3D.map((plan, index) => (
+                        <div key={index} className="rounded-xl overflow-hidden shadow-lg bg-creamy-white dark:bg-gray-800 p-4">
+                          <img 
+                            alt={`${project.title} - 3D Floor Plan ${index + 1}`} 
+                            className="w-full h-auto rounded-lg" 
+                            src={plan}
+                            onError={(e) => {
+                              e.target.src = 'https://via.placeholder.com/400x300?text=3D+Floor+Plan';
+                            }}
+                          />
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+                
+                <p className="mt-4 text-gray-600 dark:text-gray-400 text-sm text-center">
+                  * Floor plans are indicative. Actual dimensions may vary. Please refer to the brochure for detailed specifications.
+                </p>
               </div>
-              <p className="mt-4 text-gray-600 dark:text-gray-400 text-sm">
-                * Floor plans are indicative. Actual dimensions may vary. Please refer to the brochure for detailed specifications.
-              </p>
-            </div>
+            )}
 
             {/* Location Section */}
             <div className="mb-16" id="location">
               <h2 className="text-3xl font-serif font-bold mb-8 text-center text-gray-800 dark:text-gray-200">Location</h2>
+              
+              {/* Exact Location */}
+              {exactLocation && (
+                <div className="bg-creamy-white dark:bg-gray-800 p-6 rounded-xl mb-6">
+                  <h3 className="text-xl font-bold mb-3 text-gray-800 dark:text-gray-200 flex items-center gap-2">
+                    <span className="material-symbols-outlined text-primary">location_on</span>
+                    Exact Location
+                  </h3>
+                  <p className="text-gray-600 dark:text-gray-400">{exactLocation}</p>
+                </div>
+              )}
+              
               <div className="rounded-xl overflow-hidden aspect-w-16 aspect-h-9 mb-4">
                 <img 
                   alt={`Map showing ${project.title} location in ${project.location}, Bangalore`} 
                   className="w-full h-full object-cover" 
                   src="https://lh3.googleusercontent.com/aida-public/AB6AXuCAXCMy7U-YH7VldvRti8IeBjVvjwJI5PQxz27z6ECTkVvce5dNviDzzzeemJNRxmK5ADiV-RE50E2o64KikNwWC7SK5kJZF6YJXNmc9vTdp3rMCLgECyupK2H8wfoBogQxFaTsZDQ-1tHyONjm6E9FkkrUBfSukAeaR97g67f5Zt8zkt_aAB2zQIMe3UgYpH9ksV9Nv9MUSIVxnitEppSRU9jbyLb_NXkf0pugR-aOio5TQYsLfUACb7yCaSR4CLj2godUeIHEpgA" 
                 />
-              </div>
-              <div className="bg-creamy-white dark:bg-gray-800 p-6 rounded-xl">
-                <h3 className="text-xl font-bold mb-3 text-gray-800 dark:text-gray-200">Connectivity & Nearby Places</h3>
-                <div className="grid md:grid-cols-3 gap-4 text-sm text-gray-600 dark:text-gray-400">
-                  <div>
-                    <p className="font-semibold mb-1">Schools</p>
-                    <p>5 km radius - Multiple renowned schools</p>
-                  </div>
-                  <div>
-                    <p className="font-semibold mb-1">Hospitals</p>
-                    <p>3 km radius - Leading healthcare facilities</p>
-                  </div>
-                  <div>
-                    <p className="font-semibold mb-1">Shopping</p>
-                    <p>2 km radius - Malls and retail outlets</p>
-                  </div>
-                </div>
               </div>
             </div>
 

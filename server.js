@@ -3,9 +3,22 @@ const multer = require('multer');
 const cors = require('cors');
 const path = require('path');
 const fs = require('fs');
+require('dotenv').config();
+
+// Import database connection
+const connectDB = require('./backend/config/database');
+
+// Import routes
+const projects = require('./backend/routes/projects');
+const inquiries = require('./backend/routes/inquiries');
+const blogs = require('./backend/routes/blogs');
+const auth = require('./backend/routes/auth');
 
 const app = express();
 const PORT = process.env.PORT || 5000;
+
+// Connect to database
+connectDB();
 
 // Middleware
 app.use(cors());
@@ -149,6 +162,12 @@ app.use((error, req, res, next) => {
   }
   res.status(400).json({ error: error.message });
 });
+
+// Mount routes
+app.use('/api/projects', projects);
+app.use('/api/inquiries', inquiries);
+app.use('/api/blogs', blogs);
+app.use('/api/auth', auth);
 
 // Health check
 app.get('/api/health', (req, res) => {

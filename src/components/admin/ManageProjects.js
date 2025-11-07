@@ -51,19 +51,31 @@ function ManageProjects() {
     title: '',
     subtitle: '',
     image: '',
-    status: 'Completed',
+    status: 'completed',
     bedrooms: '',
     bathrooms: '',
     sqft: '',
-    price: '',
-    type: '',
-    year: '',
+    price: 'On Request',
+    propertyType: 'Residential Apartments',
+    yearBuilt: '',
+    completionDate: '',
+    launchDate: '',
     description: '',
+    location: '',
+    area: '',
+    exactLocation: '',
+    amenities: '',
+    bhkConfig: '',
+    totalUnits: '',
+    numberOfFlats: '',
     floorPlan: '',
     locationMap: '',
     gallery: ['', '', '', '', ''],
+    floorPlans2D: ['', '', ''],
+    floorPlans3D: ['', '', ''],
     brochure: '',
-    pricelist: ''
+    pricelist: '',
+    nearbyHotspots: [{ name: '', distance: '', type: 'Transport' }, { name: '', distance: '', type: 'Transport' }]
   });
 
   const [fileUploads, setFileUploads] = useState({
@@ -85,19 +97,33 @@ function ManageProjects() {
         title: project.title || '',
         subtitle: project.subtitle || '',
         image: project.image || '',
-        status: project.status || 'Completed',
+        status: project.status || 'completed',
         bedrooms: project.bedrooms || '',
         bathrooms: project.bathrooms || '',
         sqft: project.sqft || '',
-        price: project.price || '',
-        type: project.type || '',
-        year: project.year || '',
+        price: project.price || 'On Request',
+        propertyType: project.propertyType || project.type || 'Residential Apartments',
+        yearBuilt: project.yearBuilt || project.year || '',
+        completionDate: project.completionDate || '',
+        launchDate: project.launchDate || '',
         description: project.description || '',
+        location: project.location || '',
+        area: project.area || '',
+        exactLocation: project.exactLocation || '',
+        amenities: Array.isArray(project.amenities) ? project.amenities.join(', ') : (project.amenities || ''),
+        bhkConfig: Array.isArray(project.bhkConfig) ? project.bhkConfig.join(', ') : (project.bhkConfig || project.bedrooms || ''),
+        totalUnits: project.totalUnits || '',
+        numberOfFlats: project.numberOfFlats || '',
         floorPlan: project.floorPlan || '',
         locationMap: project.locationMap || '',
-        gallery: project.gallery || ['', '', '', '', ''],
-        brochure: project.brochure || '',
-        pricelist: project.pricelist || ''
+        gallery: Array.isArray(project.gallery) ? project.gallery : ['', '', '', '', ''],
+        floorPlans2D: Array.isArray(project.floorPlans2D) ? project.floorPlans2D : ['', '', ''],
+        floorPlans3D: Array.isArray(project.floorPlans3D) ? project.floorPlans3D : ['', '', ''],
+        brochure: project.brochure || project.brochureUrl || '',
+        pricelist: project.pricelist || project.priceListUrl || '',
+        nearbyHotspots: Array.isArray(project.nearbyHotspots) && project.nearbyHotspots.length > 0 
+          ? project.nearbyHotspots 
+          : [{ name: '', distance: '', type: 'Transport' }, { name: '', distance: '', type: 'Transport' }]
       });
     } else {
       setEditingProject(null);
@@ -105,19 +131,31 @@ function ManageProjects() {
         title: '',
         subtitle: '',
         image: '',
-        status: 'Completed',
+        status: 'completed',
         bedrooms: '',
         bathrooms: '',
         sqft: '',
-        price: '',
-        type: '',
-        year: '',
+        price: 'On Request',
+        propertyType: 'Residential Apartments',
+        yearBuilt: '',
+        completionDate: '',
+        launchDate: '',
         description: '',
+        location: '',
+        area: '',
+        exactLocation: '',
+        amenities: '',
+        bhkConfig: '',
+        totalUnits: '',
+        numberOfFlats: '',
         floorPlan: '',
         locationMap: '',
         gallery: ['', '', '', '', ''],
+        floorPlans2D: ['', '', ''],
+        floorPlans3D: ['', '', ''],
         brochure: '',
-        pricelist: ''
+        pricelist: '',
+        nearbyHotspots: [{ name: '', distance: '', type: 'Transport' }, { name: '', distance: '', type: 'Transport' }]
       });
     }
     setFileUploads({ imageFile: null, brochureFile: null, pricelistFile: null });
@@ -132,10 +170,26 @@ function ManageProjects() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    
+    // Process form data - convert comma-separated strings to arrays where needed
+    const processedData = {
+      ...formData,
+      amenities: formData.amenities ? formData.amenities.split(',').map(a => a.trim()).filter(a => a) : [],
+      bhkConfig: formData.bhkConfig ? formData.bhkConfig.split(',').map(b => b.trim()).filter(b => b) : [],
+      gallery: formData.gallery.filter(url => url.trim()),
+      floorPlans2D: formData.floorPlans2D.filter(url => url.trim()),
+      floorPlans3D: formData.floorPlans3D.filter(url => url.trim()),
+      nearbyHotspots: formData.nearbyHotspots.filter(h => h.name && h.distance),
+      totalUnits: formData.totalUnits ? parseInt(formData.totalUnits) : null,
+      numberOfFlats: formData.numberOfFlats ? parseInt(formData.numberOfFlats) : null,
+      brochureUrl: formData.brochure,
+      priceListUrl: formData.pricelist
+    };
+    
     if (editingProject) {
-      setProjects(projects.map(p => p.id === editingProject.id ? { ...formData, id: editingProject.id } : p));
+      setProjects(projects.map(p => p.id === editingProject.id ? { ...processedData, id: editingProject.id } : p));
     } else {
-      setProjects([...projects, { ...formData, id: projects.length + 1 }]);
+      setProjects([...projects, { ...processedData, id: projects.length + 1 }]);
     }
     handleCloseModal();
   };
@@ -338,9 +392,9 @@ function ManageProjects() {
                       className="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-background-dark/50 text-dark-charcoal dark:text-creamy-white focus:outline-none focus:ring-2 focus:ring-primary"
                       required
                     >
-                      <option value="Completed">Completed</option>
-                      <option value="Ongoing">Ongoing</option>
-                      <option value="Upcoming">Upcoming</option>
+                      <option value="completed">Completed</option>
+                      <option value="ongoing">Ongoing</option>
+                      <option value="upcoming">Upcoming</option>
                     </select>
                   </div>
 
@@ -348,16 +402,66 @@ function ManageProjects() {
                     <label className="block text-sm font-medium mb-2 text-dark-charcoal dark:text-creamy-white">Property Type</label>
                     <input
                       type="text"
-                      name="type"
-                      value={formData.type}
+                      name="propertyType"
+                      value={formData.propertyType}
                       onChange={handleChange}
                       className="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-background-dark/50 text-dark-charcoal dark:text-creamy-white focus:outline-none focus:ring-2 focus:ring-primary"
-                      placeholder="Residential"
+                      placeholder="Residential Apartments"
                     />
                   </div>
                 </div>
 
                 <div className="grid grid-cols-2 gap-4">
+                  <div>
+                    <label className="block text-sm font-medium mb-2 text-dark-charcoal dark:text-creamy-white">Location</label>
+                    <input
+                      type="text"
+                      name="location"
+                      value={formData.location}
+                      onChange={handleChange}
+                      className="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-background-dark/50 text-dark-charcoal dark:text-creamy-white focus:outline-none focus:ring-2 focus:ring-primary"
+                      placeholder="e.g., Kanakapura Road, Bangalore"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-sm font-medium mb-2 text-dark-charcoal dark:text-creamy-white">Area</label>
+                    <input
+                      type="text"
+                      name="area"
+                      value={formData.area}
+                      onChange={handleChange}
+                      className="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-background-dark/50 text-dark-charcoal dark:text-creamy-white focus:outline-none focus:ring-2 focus:ring-primary"
+                      placeholder="e.g., Vajarahalli"
+                    />
+                  </div>
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium mb-2 text-dark-charcoal dark:text-creamy-white">Exact Location</label>
+                  <input
+                    type="text"
+                    name="exactLocation"
+                    value={formData.exactLocation}
+                    onChange={handleChange}
+                    className="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-background-dark/50 text-dark-charcoal dark:text-creamy-white focus:outline-none focus:ring-2 focus:ring-primary"
+                    placeholder="Full address with landmark"
+                  />
+                </div>
+
+                <div className="grid grid-cols-2 gap-4">
+                  <div>
+                    <label className="block text-sm font-medium mb-2 text-dark-charcoal dark:text-creamy-white">BHK Configuration</label>
+                    <input
+                      type="text"
+                      name="bhkConfig"
+                      value={formData.bhkConfig}
+                      onChange={handleChange}
+                      className="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-background-dark/50 text-dark-charcoal dark:text-creamy-white focus:outline-none focus:ring-2 focus:ring-primary"
+                      placeholder="e.g., 2 BHK, 3 BHK (comma separated)"
+                    />
+                  </div>
+
                   <div>
                     <label className="block text-sm font-medium mb-2 text-dark-charcoal dark:text-creamy-white">Bedrooms</label>
                     <input
@@ -366,9 +470,12 @@ function ManageProjects() {
                       value={formData.bedrooms}
                       onChange={handleChange}
                       className="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-background-dark/50 text-dark-charcoal dark:text-creamy-white focus:outline-none focus:ring-2 focus:ring-primary"
+                      placeholder="e.g., 2, 3 BHK"
                     />
                   </div>
+                </div>
 
+                <div className="grid grid-cols-2 gap-4">
                   <div>
                     <label className="block text-sm font-medium mb-2 text-dark-charcoal dark:text-creamy-white">Bathrooms</label>
                     <input
@@ -377,6 +484,45 @@ function ManageProjects() {
                       value={formData.bathrooms}
                       onChange={handleChange}
                       className="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-background-dark/50 text-dark-charcoal dark:text-creamy-white focus:outline-none focus:ring-2 focus:ring-primary"
+                      placeholder="e.g., 2, 3"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-sm font-medium mb-2 text-dark-charcoal dark:text-creamy-white">Total Units</label>
+                    <input
+                      type="number"
+                      name="totalUnits"
+                      value={formData.totalUnits}
+                      onChange={handleChange}
+                      className="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-background-dark/50 text-dark-charcoal dark:text-creamy-white focus:outline-none focus:ring-2 focus:ring-primary"
+                      placeholder="e.g., 120"
+                    />
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-2 gap-4">
+                  <div>
+                    <label className="block text-sm font-medium mb-2 text-dark-charcoal dark:text-creamy-white">Number of Flats</label>
+                    <input
+                      type="number"
+                      name="numberOfFlats"
+                      value={formData.numberOfFlats}
+                      onChange={handleChange}
+                      className="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-background-dark/50 text-dark-charcoal dark:text-creamy-white focus:outline-none focus:ring-2 focus:ring-primary"
+                      placeholder="e.g., 120"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-sm font-medium mb-2 text-dark-charcoal dark:text-creamy-white">Amenities</label>
+                    <input
+                      type="text"
+                      name="amenities"
+                      value={formData.amenities}
+                      onChange={handleChange}
+                      className="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-background-dark/50 text-dark-charcoal dark:text-creamy-white focus:outline-none focus:ring-2 focus:ring-primary"
+                      placeholder="e.g., Swimming Pool, Gym, Parking (comma separated)"
                     />
                   </div>
                 </div>
@@ -398,11 +544,37 @@ function ManageProjects() {
                     <label className="block text-sm font-medium mb-2 text-dark-charcoal dark:text-creamy-white">Year Built</label>
                     <input
                       type="text"
-                      name="year"
-                      value={formData.year}
+                      name="yearBuilt"
+                      value={formData.yearBuilt}
                       onChange={handleChange}
                       className="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-background-dark/50 text-dark-charcoal dark:text-creamy-white focus:outline-none focus:ring-2 focus:ring-primary"
                       placeholder="2023"
+                    />
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-2 gap-4">
+                  <div>
+                    <label className="block text-sm font-medium mb-2 text-dark-charcoal dark:text-creamy-white">Completion Date</label>
+                    <input
+                      type="text"
+                      name="completionDate"
+                      value={formData.completionDate}
+                      onChange={handleChange}
+                      className="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-background-dark/50 text-dark-charcoal dark:text-creamy-white focus:outline-none focus:ring-2 focus:ring-primary"
+                      placeholder="2025 (for ongoing projects)"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-sm font-medium mb-2 text-dark-charcoal dark:text-creamy-white">Launch Date</label>
+                    <input
+                      type="text"
+                      name="launchDate"
+                      value={formData.launchDate}
+                      onChange={handleChange}
+                      className="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-background-dark/50 text-dark-charcoal dark:text-creamy-white focus:outline-none focus:ring-2 focus:ring-primary"
+                      placeholder="2024 (for upcoming projects)"
                     />
                   </div>
                 </div>
@@ -536,6 +708,106 @@ function ManageProjects() {
                         placeholder={`Gallery image ${index + 1} URL`}
                       />
                     ))}
+                  </div>
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium mb-2 text-dark-charcoal dark:text-creamy-white">2D Floor Plans (URLs)</label>
+                  <div className="space-y-2">
+                    {formData.floorPlans2D.map((url, index) => (
+                      <input
+                        key={index}
+                        type="url"
+                        value={url}
+                        onChange={(e) => {
+                          const newPlans = [...formData.floorPlans2D];
+                          newPlans[index] = e.target.value;
+                          setFormData({ ...formData, floorPlans2D: newPlans });
+                        }}
+                        className="w-full px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-background-dark/50 text-dark-charcoal dark:text-creamy-white focus:outline-none focus:ring-2 focus:ring-primary"
+                        placeholder={`2D Floor Plan ${index + 1} URL`}
+                      />
+                    ))}
+                  </div>
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium mb-2 text-dark-charcoal dark:text-creamy-white">3D Floor Plans (URLs)</label>
+                  <div className="space-y-2">
+                    {formData.floorPlans3D.map((url, index) => (
+                      <input
+                        key={index}
+                        type="url"
+                        value={url}
+                        onChange={(e) => {
+                          const newPlans = [...formData.floorPlans3D];
+                          newPlans[index] = e.target.value;
+                          setFormData({ ...formData, floorPlans3D: newPlans });
+                        }}
+                        className="w-full px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-background-dark/50 text-dark-charcoal dark:text-creamy-white focus:outline-none focus:ring-2 focus:ring-primary"
+                        placeholder={`3D Floor Plan ${index + 1} URL`}
+                      />
+                    ))}
+                  </div>
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium mb-2 text-dark-charcoal dark:text-creamy-white">Nearby Hotspots</label>
+                  <div className="space-y-3">
+                    {formData.nearbyHotspots.map((hotspot, index) => (
+                      <div key={index} className="grid grid-cols-3 gap-2 p-3 bg-gray-50 dark:bg-gray-800 rounded-lg">
+                        <input
+                          type="text"
+                          value={hotspot.name}
+                          onChange={(e) => {
+                            const newHotspots = [...formData.nearbyHotspots];
+                            newHotspots[index] = { ...newHotspots[index], name: e.target.value };
+                            setFormData({ ...formData, nearbyHotspots: newHotspots });
+                          }}
+                          className="px-3 py-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-background-dark/50 text-dark-charcoal dark:text-creamy-white focus:outline-none focus:ring-2 focus:ring-primary text-sm"
+                          placeholder="Name"
+                        />
+                        <input
+                          type="text"
+                          value={hotspot.distance}
+                          onChange={(e) => {
+                            const newHotspots = [...formData.nearbyHotspots];
+                            newHotspots[index] = { ...newHotspots[index], distance: e.target.value };
+                            setFormData({ ...formData, nearbyHotspots: newHotspots });
+                          }}
+                          className="px-3 py-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-background-dark/50 text-dark-charcoal dark:text-creamy-white focus:outline-none focus:ring-2 focus:ring-primary text-sm"
+                          placeholder="Distance"
+                        />
+                        <select
+                          value={hotspot.type}
+                          onChange={(e) => {
+                            const newHotspots = [...formData.nearbyHotspots];
+                            newHotspots[index] = { ...newHotspots[index], type: e.target.value };
+                            setFormData({ ...formData, nearbyHotspots: newHotspots });
+                          }}
+                          className="px-3 py-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-background-dark/50 text-dark-charcoal dark:text-creamy-white focus:outline-none focus:ring-2 focus:ring-primary text-sm"
+                        >
+                          <option value="Transport">Transport</option>
+                          <option value="Shopping">Shopping</option>
+                          <option value="Healthcare">Healthcare</option>
+                          <option value="Education">Education</option>
+                          <option value="Business">Business</option>
+                          <option value="Recreation">Recreation</option>
+                        </select>
+                      </div>
+                    ))}
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setFormData({
+                          ...formData,
+                          nearbyHotspots: [...formData.nearbyHotspots, { name: '', distance: '', type: 'Transport' }]
+                        });
+                      }}
+                      className="text-sm text-primary hover:underline"
+                    >
+                      + Add Another Hotspot
+                    </button>
                   </div>
                 </div>
 

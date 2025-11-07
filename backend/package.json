@@ -1,0 +1,35 @@
+{
+  "name": "svbuilders-backend",
+  "version": "1.0.0",
+  "description": "SV Builders Backend API Server",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node server.js",
+    "create-admin": "node scripts/createAdmin.js",
+    "reset-admin": "node scripts/resetAdminPassword.js",
+    "seed-blogs": "node scripts/seedBlogs.js"
+  },
+  "keywords": [
+    "express",
+    "mongodb",
+    "api",
+    "backend"
+  ],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^5.1.0",
+    "mongoose": "^8.19.2",
+    "dotenv": "^17.2.3",
+    "cors": "^2.8.5",
+    "bcryptjs": "^3.0.3",
+    "jsonwebtoken": "^9.0.2",
+    "multer": "^2.0.2"
+  },
+  "devDependencies": {},
+  "engines": {
+    "node": ">=14.0.0"
+  }
+}
+

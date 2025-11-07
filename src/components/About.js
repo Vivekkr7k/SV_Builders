@@ -67,10 +67,10 @@ function About() {
               }}>
                 <div className="flex flex-col gap-2 sm:gap-3 text-center px-2">
                   <h1 className="text-white text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-display font-bold leading-tight tracking-tight">
-                    The Story of SV Builders
+                    About SV Builders
                   </h1>
                   <h2 className="text-white text-sm sm:text-base md:text-lg font-body font-normal leading-normal">
-                    A legacy of excellence and a commitment to your future.
+                    Leading real estate developer in Bangalore with 25+ years of excellence in creating premium residential spaces.
                   </h2>
                 </div>
                 <div className="flex flex-col sm:flex-row gap-3 justify-center w-full px-4 max-w-2xl">
@@ -95,8 +95,8 @@ function About() {
                     </div>
                   </div>
                   <div className="flex-1 pt-1">
-                    <p className="text-text-light dark:text-text-dark text-base sm:text-lg font-bold font-display mb-1">Founded in 2005</p>
-                    <p className="text-gray-500 dark:text-gray-400 text-sm sm:text-base font-normal leading-normal">New York, USA</p>
+                    <p className="text-text-light dark:text-text-dark text-base sm:text-lg font-bold font-display mb-1">Founded - 25+ Years Ago</p>
+                    <p className="text-gray-500 dark:text-gray-400 text-sm sm:text-base font-normal leading-normal">Bangalore, Karnataka, India</p>
                   </div>
                 </div>
 
@@ -104,12 +104,12 @@ function About() {
                 <div className="flex gap-4 sm:gap-6 items-start">
                   <div className="flex-shrink-0">
                     <div className="w-12 h-12 sm:w-16 sm:h-16 bg-primary/10 rounded-full flex items-center justify-center">
-                      <span className="material-symbols-outlined text-primary text-2xl sm:text-3xl md:text-4xl">public</span>
+                      <span className="material-symbols-outlined text-primary text-2xl sm:text-3xl md:text-4xl">apartment</span>
                     </div>
                   </div>
                   <div className="flex-1 pt-1">
-                    <p className="text-text-light dark:text-text-dark text-base sm:text-lg font-bold font-display mb-1">First International Office</p>
-                    <p className="text-gray-500 dark:text-gray-400 text-sm sm:text-base font-normal leading-normal">London, UK</p>
+                    <p className="text-text-light dark:text-text-dark text-base sm:text-lg font-bold font-display mb-1">150+ Completed Projects</p>
+                    <p className="text-gray-500 dark:text-gray-400 text-sm sm:text-base font-normal leading-normal">Across Prime Locations in Bangalore</p>
                   </div>
                 </div>
 
@@ -117,12 +117,12 @@ function About() {
                 <div className="flex gap-4 sm:gap-6 items-start">
                   <div className="flex-shrink-0">
                     <div className="w-12 h-12 sm:w-16 sm:h-16 bg-primary/10 rounded-full flex items-center justify-center">
-                      <span className="material-symbols-outlined text-primary text-2xl sm:text-3xl md:text-4xl">trending_up</span>
+                      <span className="material-symbols-outlined text-primary text-2xl sm:text-3xl md:text-4xl">groups</span>
                     </div>
                   </div>
                   <div className="flex-1 pt-1">
-                    <p className="text-text-light dark:text-text-dark text-base sm:text-lg font-bold font-display mb-1">Record-Breaking Sale</p>
-                    <p className="text-gray-500 dark:text-gray-400 text-sm sm:text-base font-normal leading-normal">Dubai, UAE</p>
+                    <p className="text-text-light dark:text-text-dark text-base sm:text-lg font-bold font-display mb-1">5000+ Happy Clients</p>
+                    <p className="text-gray-500 dark:text-gray-400 text-sm sm:text-base font-normal leading-normal">Trusted by Homebuyers Across Bangalore</p>
                   </div>
                 </div>
               </div>
@@ -162,10 +162,10 @@ function About() {
                 <div className="lg:w-1/2 flex flex-col gap-4 sm:gap-6">
                   <div className="flex flex-col gap-3 sm:gap-4">
                     <h1 className="text-text-light dark:text-text-dark tracking-tight text-xl sm:text-2xl md:text-3xl lg:text-4xl font-display font-bold leading-tight">
-                      Our Guiding Principles
+                      Our Mission & Values
                     </h1>
                     <p className="text-text-light dark:text-text-dark text-sm sm:text-base font-normal leading-relaxed">
-                      Our vision for the future is to create spaces that inspire and elevate the human experience. We are guided by our core values of Integrity, Excellence, and Innovation.
+                      SV Builders is committed to creating premium residential spaces that enhance quality of life in Bangalore. With over 25 years of experience, we have established ourselves as a trusted name in real estate development. Our mission is to deliver quality construction, timely completion, and exceptional customer service while maintaining the highest standards of integrity and transparency.
                     </p>
                   </div>
                   <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4">
@@ -173,21 +173,21 @@ function About() {
                       <span className="material-symbols-outlined text-primary text-2xl">handshake</span>
                       <div className="flex flex-col gap-1">
                         <h2 className="text-text-light dark:text-text-dark text-base sm:text-lg font-bold font-display">Integrity</h2>
-                        <p className="text-gray-500 dark:text-gray-400 text-xs sm:text-sm font-normal leading-normal">We believe in honesty and transparency in all our dealings.</p>
+                        <p className="text-gray-500 dark:text-gray-400 text-xs sm:text-sm font-normal leading-normal">Transparency and honesty in all our dealings. RERA approved projects with complete documentation.</p>
                       </div>
                     </div>
                     <div className="flex gap-3 rounded-lg border border-accent/50 bg-background-light dark:bg-background-dark p-4 flex-col">
                       <span className="material-symbols-outlined text-primary text-2xl">workspace_premium</span>
                       <div className="flex flex-col gap-1">
-                        <h2 className="text-text-light dark:text-text-dark text-base sm:text-lg font-bold font-display">Excellence</h2>
-                        <p className="text-gray-500 dark:text-gray-400 text-xs sm:text-sm font-normal leading-normal">We strive for the highest quality in everything we do.</p>
+                        <h2 className="text-text-light dark:text-text-dark text-base sm:text-lg font-bold font-display">Quality</h2>
+                        <p className="text-gray-500 dark:text-gray-400 text-xs sm:text-sm font-normal leading-normal">Premium materials, superior construction, and world-class amenities in every project.</p>
                       </div>
                     </div>
                     <div className="flex gap-3 rounded-lg border border-accent/50 bg-background-light dark:bg-background-dark p-4 flex-col">
-                      <span className="material-symbols-outlined text-primary text-2xl">lightbulb</span>
+                      <span className="material-symbols-outlined text-primary text-2xl">schedule</span>
                       <div className="flex flex-col gap-1">
-                        <h2 className="text-text-light dark:text-text-dark text-base sm:text-lg font-bold font-display">Innovation</h2>
-                        <p className="text-gray-500 dark:text-gray-400 text-xs sm:text-sm font-normal leading-normal">We are constantly pushing the boundaries of design and technology.</p>
+                        <h2 className="text-text-light dark:text-text-dark text-base sm:text-lg font-bold font-display">Timely Delivery</h2>
+                        <p className="text-gray-500 dark:text-gray-400 text-xs sm:text-sm font-normal leading-normal">25+ years of proven track record in on-time project completion across Bangalore.</p>
                       </div>
                     </div>
                   </div>
@@ -195,30 +195,20 @@ function About() {
               </div>
             </div>
 
-            {/* Testimonials Carousel */}
+            {/* About Content */}
             <div className="py-6 sm:py-8 md:py-10 mb-8 sm:mb-12">
-              <h2 className="text-2xl sm:text-3xl font-display font-bold text-center mb-6 sm:mb-8">What Our Clients Say</h2>
-              <div className="flex overflow-x-auto [-ms-scrollbar-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
-                <div className="flex items-stretch p-2 sm:p-4 gap-4">
-                  {testimonials.map((testimonial, index) => (
-                    <div key={index} className="flex h-full flex-col gap-3 sm:gap-4 rounded-xl bg-white dark:bg-background-dark/50 shadow-[0_0_10px_rgba(0,0,0,0.05)] min-w-[280px] sm:min-w-72">
-                      <div 
-                        className="w-full bg-center bg-no-repeat aspect-video bg-cover rounded-t-xl" 
-                        style={{ backgroundImage: `url('${testimonial.image}')` }}
-                      ></div>
-                      <div className="flex flex-col flex-1 justify-between p-4 pt-0 gap-3 sm:gap-4">
-                        <div>
-                          <p className="text-text-light dark:text-text-dark text-base sm:text-lg font-bold font-display mb-2">{testimonial.name}</p>
-                          <p className="text-gray-500 dark:text-gray-400 text-sm sm:text-base font-normal leading-relaxed">
-                            "{testimonial.text}"
-                          </p>
-                        </div>
-                        <button className="flex cursor-pointer items-center justify-center overflow-hidden rounded-lg sm:rounded-xl h-10 px-5 sm:px-6 bg-primary text-white text-xs sm:text-sm font-bold leading-normal hover:bg-primary/90 hover:scale-105 transition-all duration-300 shadow-lg hover:shadow-2xl">
-                          <span className="truncate">View Project</span>
-                        </button>
-                      </div>
-                    </div>
-                  ))}
+              <div className="space-y-6">
+                <div>
+                  <h2 className="text-2xl sm:text-3xl font-display font-bold mb-4">Why Choose SV Builders?</h2>
+                  <p className="text-gray-600 dark:text-gray-400 leading-relaxed mb-4">
+                    SV Builders has been a trusted name in Bangalore's real estate sector for over 25 years. We specialize in developing premium residential projects across prime locations including HSR Layout, Koramangala, Whitefield, Electronic City, and Yelahanka.
+                  </p>
+                  <p className="text-gray-600 dark:text-gray-400 leading-relaxed mb-4">
+                    Our commitment to quality construction, timely delivery, and customer satisfaction has earned us the trust of over 5000 happy clients. Every project we undertake is RERA approved and built with premium materials, modern amenities, and sustainable practices.
+                  </p>
+                  <p className="text-gray-600 dark:text-gray-400 leading-relaxed">
+                    Whether you're looking for a 2 BHK apartment in a bustling IT corridor or a spacious 4 BHK villa in a serene neighborhood, SV Builders offers residential solutions tailored to your lifestyle and budget. We also provide turnkey individual home construction services for those seeking custom-designed homes.
+                  </p>
                 </div>
               </div>
             </div>

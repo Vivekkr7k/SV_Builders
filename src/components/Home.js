@@ -2,67 +2,9 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import Navbar from './Navbar';
 import Footer from './Footer';
+import { projects as allProjects } from '../data/projectsData';
 
 function App() {
-
-  // All Projects with status tags - Bangalore-focused projects
-  const allProjects = [
-    {
-      id: 1,
-      title: "Sai Omkar Residency",
-      location: "HSR Layout, Bangalore",
-      area: "HSR Layout",
-      description: "Premium residential apartments in the heart of HSR Layout, featuring modern architecture, spacious 2 & 3 BHK units with world-class amenities. Located in one of Bangalore's most sought-after neighborhoods.",
-      status: "completed",
-      image: "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=1200&q=80",
-      amenities: ["Swimming Pool", "Clubhouse", "Gymnasium", "Landscaped Gardens", "Parking"],
-      brochureUrl: "#",
-    },
-    {
-      id: 2,
-      title: "Shri Balaji Residency",
-      location: "Koramangala, Bangalore",
-      area: "Koramangala",
-      description: "Elegant residential project in Koramangala offering 2, 3 & 4 BHK apartments. Features include premium finishes, security systems, and proximity to IT hubs, schools, and shopping centers.",
-      status: "completed",
-      image: "https://lh3.googleusercontent.com/aida-public/AB6AXuA8tACyec0xqLnYRXU3rGZsI54n9D97neDXRiaTRkgfnk8iNaSyoJ7GNtnuIRpKV8h-yqT8aFi5QAonhaoio9SZmMjR6e2ERWFXb2Pq1_-qZWUXOx5ZxuVNJb3rs-BUetZcpIo83j_Cl29Xkvrcb3lvWXbfigrz_ww88j0ygk4sVGbbCt0Xc479-0ZeUNf2KLkjJR3z1a16YGjRf7rpvvZNK026FLAaojEgW3v9fsUAdImRBsAvbu5y0m9uInwgp0TYrQaQEFDJe6Q",
-      amenities: ["Power Backup", "Security", "Lift", "Parking", "Water Supply"],
-      brochureUrl: "#",
-    },
-    {
-      id: 3,
-      title: "SV Sri Balaji Residency",
-      location: "Whitefield, Bangalore",
-      area: "Whitefield",
-      description: "Ongoing premium residential development in Whitefield, featuring contemporary design and smart home features. Offering 2 & 3 BHK apartments with excellent connectivity to IT corridors.",
-      status: "ongoing",
-      image: "https://lh3.googleusercontent.com/aida-public/AB6AXuDRALEcFzR21B0uHsmR5vs_-CXdPB5KvS7VV4I3Ye3mYKaq7VFU9SF1ZOJlWmBhXZHYljRc1aN73iYLvE-RtzX2kV-8HK-IIsuMA1AWGEF6LutxFZD2VEv_jImY7OqPt942Pn3QolUjvUayJnQ-LlENhxY1lHQEzs7Q3oSjPcG_B2SvWNJ3QvbV1ssyFnHJdI5yPt6C0QLNGwjZALxJvMTj2Yi007VMzWcDLI7aUWyV0Qd5PBNDf3da3wH_Idm_ecm9j-O-8QehsaE",
-      amenities: ["Swimming Pool", "Clubhouse", "Children's Play Area", "Gym", "Landscaped Gardens"],
-      brochureUrl: "#",
-    },
-    {
-      id: 4,
-      title: "SV Giridhama Residency",
-      location: "Electronic City, Bangalore",
-      area: "Electronic City",
-      description: "Modern residential apartments under construction in Electronic City. Strategically located near tech parks, featuring 2, 3 & 4 BHK homes with premium amenities and excellent connectivity.",
-      status: "ongoing",
-      image: "https://lh3.googleusercontent.com/aida-public/AB6AXuApgaN2IG9WWZdl_4GE1TnrppxO7j84No00gG4eLOqmJt1ngXEYlfU2nlVJO39wXS5_n12Lof9px7cRlrjIUWtovP1kf4hG9a5aipnnEsBXlf-FSzGSZLqEIHJl9scyURlZw9P1GtWVwfkyCZ5ZM0Z2fjdkIaUAS49TZUhr8V0ZWrGrWo7rfpG9KBM2QRXyNrLFpYwD-wSKp8jpdwYYAAovU_vt4Sc3DADQxFgRmuk8EiSSbc29NJfFsUSxzHgXExyUIo88aj1gUF4",
-      amenities: ["Rooftop Garden", "Community Hall", "Gymnasium", "24/7 Security", "Parking"],
-      brochureUrl: "#",
-    },
-    {
-      id: 5,
-      title: "SV Royal Residency",
-      location: "Yelahanka, Bangalore",
-      area: "Yelahanka",
-      description: "Upcoming luxury residential project in Yelahanka featuring spacious 3 & 4 BHK apartments. Planned with premium amenities, green spaces, and modern infrastructure in a rapidly developing area of North Bangalore.",
-      status: "upcoming",
-      image: "https://lh3.googleusercontent.com/aida-public/AB6AXuCyQseEJqEPhXZd2f6Nv02ToeFOQYS8dyvgu4XFtWt8Dih7dfZw7UwwNm7ssKrRyI74K6XRAVvIrTL8GfNGwvWYiGIjTR5usj7AeiAIamjkiSSRT3SAp2VA1HlZwDm2AXhVJRKi1UV0LII31G2_1-foAOeIUXG3J0Lxk4Vu4znOGloUrB1rTn4jv0yntd0VWmoNvcERLnPQuxFAL_irEehFD7rU5CnmKVOIkH1dilFG03nC12CS34VBw3DvQ_U0vuGjJwV2Kgz4Xt0",
-      amenities: ["Swimming Pool", "Clubhouse", "Multi-purpose Hall", "Jogging Track", "Green Spaces"],
-      brochureUrl: "#",
-    },
-  ];
 
   // Bangalore-focused banner images
   const carouselImages = [
@@ -396,14 +338,6 @@ function App() {
                             <span>View Details</span>
                             <span className="material-symbols-outlined text-sm">arrow_forward</span>
                           </Link>
-                          <a
-                            href={project.brochureUrl}
-                            download
-                            className="w-full flex items-center justify-center gap-1.5 px-3 py-2 bg-white dark:bg-dark-charcoal border border-primary text-primary font-semibold rounded-md hover:bg-primary/10 transition-all duration-300 text-xs"
-                          >
-                            <span className="material-symbols-outlined text-sm">download</span>
-                            <span>Download Brochure</span>
-                          </a>
                       </div>
                       </div>
                     </div>
@@ -412,46 +346,164 @@ function App() {
             </div>
           </section>
 
-            {/* Services Section - SEO Optimized */}
+            {/* Services Section */}
             <section className="py-20 px-4 sm:px-10 bg-white dark:bg-background-dark">
             <div className="max-w-6xl mx-auto">
-                <h2 className="text-3xl md:text-4xl font-bold text-center mb-4 font-display text-dark-charcoal dark:text-creamy-white">
-                  Why Choose SV Builders in Bangalore?
-                </h2>
-                <p className="text-center text-dark-charcoal/70 dark:text-creamy-white/70 mb-12 max-w-2xl mx-auto">
-                  We offer comprehensive real estate services including residential project development, property sales, and consultation across Bangalore.
-                </p>
+                <div className="text-center mb-12">
+                  <div className="inline-block px-4 py-2 bg-primary/10 rounded-full mb-4">
+                    <span className="text-primary text-sm font-bold uppercase tracking-wider">Our Services</span>
+                  </div>
+                  <h2 className="text-3xl md:text-4xl font-bold text-center mb-4 font-display text-dark-charcoal dark:text-creamy-white">
+                    Our Services
+                  </h2>
+                  <p className="text-center text-dark-charcoal/70 dark:text-creamy-white/70 mb-12 max-w-2xl mx-auto">
+                    We offer comprehensive real estate services including residential project development, property sales, and consultation across Bangalore.
+                  </p>
+                </div>
               <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
                   <div className="bg-creamy-white dark:bg-light-taupe/20 rounded-xl overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2 p-8">
                     <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mb-4">
-                      <span className="material-symbols-outlined text-primary text-3xl">foundation</span>
+                      <span className="material-symbols-outlined text-primary text-3xl">apartment</span>
               </div>
-                    <h3 className="text-xl font-bold mb-3 font-display text-dark-charcoal dark:text-creamy-white">Quality Construction</h3>
+                    <h3 className="text-xl font-bold mb-3 font-display text-dark-charcoal dark:text-creamy-white">Residential Construction</h3>
                     <p className="text-dark-charcoal/70 dark:text-creamy-white/70">
-                      We use premium materials and follow strict quality standards to ensure durable and safe residential buildings in Bangalore.
+                      Premium residential projects including turnkey individual home construction services. We build quality homes with modern amenities.
                     </p>
                 </div>
                   <div className="bg-creamy-white dark:bg-light-taupe/20 rounded-xl overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2 p-8">
                     <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mb-4">
-                      <span className="material-symbols-outlined text-primary text-3xl">star</span>
+                      <span className="material-symbols-outlined text-primary text-3xl">business</span>
                 </div>
-                    <h3 className="text-xl font-bold mb-3 font-display text-dark-charcoal dark:text-creamy-white">Premium Amenities</h3>
+                    <h3 className="text-xl font-bold mb-3 font-display text-dark-charcoal dark:text-creamy-white">Commercial Construction</h3>
                     <p className="text-dark-charcoal/70 dark:text-creamy-white/70">
-                      All our residential projects in Bangalore feature world-class amenities including swimming pools, clubhouses, gyms, and landscaped gardens.
+                      Commercial spaces and office buildings designed to elevate your business operations in Bangalore.
                     </p>
                 </div>
                   <div className="bg-creamy-white dark:bg-light-taupe/20 rounded-xl overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2 p-8">
                     <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mb-4">
-                      <span className="material-symbols-outlined text-primary text-3xl">schedule</span>
+                      <span className="material-symbols-outlined text-primary text-3xl">support_agent</span>
                 </div>
-                    <h3 className="text-xl font-bold mb-3 font-display text-dark-charcoal dark:text-creamy-white">Timely Delivery</h3>
+                    <h3 className="text-xl font-bold mb-3 font-display text-dark-charcoal dark:text-creamy-white">Property Consultation</h3>
                     <p className="text-dark-charcoal/70 dark:text-creamy-white/70">
-                      With our proven track record, we ensure on-time project completion and handover to homebuyers in Bangalore.
+                      Expert property consultation services to help you make informed decisions about your real estate investments.
                     </p>
                 </div>
               </div>
             </div>
           </section>
+
+            {/* Testimonials Section */}
+            <section className="py-20 px-4 sm:px-10 bg-gradient-to-b from-white to-background-light dark:from-background-dark dark:to-background-dark">
+            <div className="max-w-6xl mx-auto">
+                <div className="text-center mb-12">
+                  <div className="inline-block px-4 py-2 bg-primary/10 rounded-full mb-4">
+                    <span className="text-primary text-sm font-bold uppercase tracking-wider">Testimonials</span>
+                  </div>
+                  <h2 className="text-3xl md:text-4xl font-bold text-center mb-4 font-display text-dark-charcoal dark:text-creamy-white">
+                    What Our Clients Say
+                  </h2>
+                  <p className="text-center text-dark-charcoal/70 dark:text-creamy-white/70 mb-12 max-w-2xl mx-auto">
+                    Discover the experiences of our satisfied customers who trusted SV Builders for their dream homes.
+                  </p>
+                </div>
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+                  <div className="bg-creamy-white dark:bg-light-taupe/20 rounded-xl p-8 shadow-lg">
+                    <div className="flex items-center mb-4">
+                      <span className="material-symbols-outlined text-primary text-4xl">star</span>
+                      <span className="material-symbols-outlined text-primary text-4xl">star</span>
+                      <span className="material-symbols-outlined text-primary text-4xl">star</span>
+                      <span className="material-symbols-outlined text-primary text-4xl">star</span>
+                      <span className="material-symbols-outlined text-primary text-4xl">star</span>
+                    </div>
+                    <p className="text-dark-charcoal dark:text-creamy-white mb-4 italic">
+                      "SV Builders delivered exactly what they promised. Our new home in HSR Layout exceeded all expectations. Quality construction and timely delivery!"
+                    </p>
+                    <p className="font-bold text-dark-charcoal dark:text-creamy-white">- Ramesh K., Homeowner</p>
+                  </div>
+                  <div className="bg-creamy-white dark:bg-light-taupe/20 rounded-xl p-8 shadow-lg">
+                    <div className="flex items-center mb-4">
+                      <span className="material-symbols-outlined text-primary text-4xl">star</span>
+                      <span className="material-symbols-outlined text-primary text-4xl">star</span>
+                      <span className="material-symbols-outlined text-primary text-4xl">star</span>
+                      <span className="material-symbols-outlined text-primary text-4xl">star</span>
+                      <span className="material-symbols-outlined text-primary text-4xl">star</span>
+                    </div>
+                    <p className="text-dark-charcoal dark:text-creamy-white mb-4 italic">
+                      "Excellent service from start to finish. The team was professional, responsive, and the amenities at Koramangala project are top-notch."
+                    </p>
+                    <p className="font-bold text-dark-charcoal dark:text-creamy-white">- Priya S., Investor</p>
+                  </div>
+                  <div className="bg-creamy-white dark:bg-light-taupe/20 rounded-xl p-8 shadow-lg">
+                    <div className="flex items-center mb-4">
+                      <span className="material-symbols-outlined text-primary text-4xl">star</span>
+                      <span className="material-symbols-outlined text-primary text-4xl">star</span>
+                      <span className="material-symbols-outlined text-primary text-4xl">star</span>
+                      <span className="material-symbols-outlined text-primary text-4xl">star</span>
+                      <span className="material-symbols-outlined text-primary text-4xl">star</span>
+                    </div>
+                    <p className="text-dark-charcoal dark:text-creamy-white mb-4 italic">
+                      "Best decision we made! SV Builders' attention to detail and commitment to quality is unmatched. Highly recommend for anyone looking for a home in Bangalore."
+                    </p>
+                    <p className="font-bold text-dark-charcoal dark:text-creamy-white">- Anil M., Homebuyer</p>
+                  </div>
+                </div>
+              </div>
+            </section>
+
+            {/* FAQs Section */}
+            <section className="py-20 px-4 sm:px-10 bg-white dark:bg-background-dark">
+            <div className="max-w-4xl mx-auto">
+                <div className="text-center mb-12">
+                  <div className="inline-block px-4 py-2 bg-primary/10 rounded-full mb-4">
+                    <span className="text-primary text-sm font-bold uppercase tracking-wider">FAQs</span>
+                  </div>
+                  <h2 className="text-3xl md:text-4xl font-bold text-center mb-4 font-display text-dark-charcoal dark:text-creamy-white">
+                    Frequently Asked Questions
+                  </h2>
+                  <p className="text-center text-dark-charcoal/70 dark:text-creamy-white/70 mb-12 max-w-2xl mx-auto">
+                    Find answers to commonly asked questions about SV Builders and our projects.
+                  </p>
+                </div>
+                <div className="space-y-6">
+                  <div className="bg-creamy-white dark:bg-light-taupe/20 rounded-xl p-6 shadow-md">
+                    <h3 className="text-xl font-bold mb-3 font-display text-dark-charcoal dark:text-creamy-white">What areas does SV Builders serve in Bangalore?</h3>
+                    <p className="text-dark-charcoal/70 dark:text-creamy-white/70">
+                      SV Builders serves major areas in Bangalore including HSR Layout, Koramangala, Whitefield, Electronic City, Yelahanka, and many other prime locations across the city.
+                    </p>
+                  </div>
+                  <div className="bg-creamy-white dark:bg-light-taupe/20 rounded-xl p-6 shadow-md">
+                    <h3 className="text-xl font-bold mb-3 font-display text-dark-charcoal dark:text-creamy-white">What types of projects does SV Builders offer?</h3>
+                    <p className="text-dark-charcoal/70 dark:text-creamy-white/70">
+                      We offer residential apartments in various configurations (2 BHK, 3 BHK, 4 BHK), commercial spaces, and turnkey individual home construction services across Bangalore.
+                    </p>
+                  </div>
+                  <div className="bg-creamy-white dark:bg-light-taupe/20 rounded-xl p-6 shadow-md">
+                    <h3 className="text-xl font-bold mb-3 font-display text-dark-charcoal dark:text-creamy-white">Are SV Builders projects RERA approved?</h3>
+                    <p className="text-dark-charcoal/70 dark:text-creamy-white/70">
+                      Yes, all our projects comply with RERA regulations. We ensure all necessary approvals and certifications are in place before project launch.
+                    </p>
+                  </div>
+                  <div className="bg-creamy-white dark:bg-light-taupe/20 rounded-xl p-6 shadow-md">
+                    <h3 className="text-xl font-bold mb-3 font-display text-dark-charcoal dark:text-creamy-white">What amenities are included in SV Builders projects?</h3>
+                    <p className="text-dark-charcoal/70 dark:text-creamy-white/70">
+                      Our projects feature world-class amenities including swimming pools, clubhouses, gymnasiums, landscaped gardens, security systems, power backup, parking facilities, and more depending on the project.
+                    </p>
+                  </div>
+                  <div className="bg-creamy-white dark:bg-light-taupe/20 rounded-xl p-6 shadow-md">
+                    <h3 className="text-xl font-bold mb-3 font-display text-dark-charcoal dark:text-creamy-white">How can I schedule a site visit?</h3>
+                    <p className="text-dark-charcoal/70 dark:text-creamy-white/70">
+                      You can schedule a site visit by filling out our inquiry form on the website, calling us directly, or visiting our office. Our team will arrange a convenient time for you to visit the project.
+                    </p>
+                  </div>
+                  <div className="bg-creamy-white dark:bg-light-taupe/20 rounded-xl p-6 shadow-md">
+                    <h3 className="text-xl font-bold mb-3 font-display text-dark-charcoal dark:text-creamy-white">What payment options are available?</h3>
+                    <p className="text-dark-charcoal/70 dark:text-creamy-white/70">
+                      We offer flexible payment plans with various financing options. Our sales team will provide detailed information about payment plans, home loans, and EMI options during your consultation.
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </section>
 
             {/* Inquiry Form Section */}
           <section id="inquiry-form" className="py-20 px-4 sm:px-10 bg-gradient-to-b from-background-light to-light-taupe/20 dark:from-background-dark dark:to-dark-charcoal">

@@ -2,18 +2,76 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 function AdminLogin() {
-  const [credentials, setCredentials] = useState({ username: '', password: '' });
+  const [credentials, setCredentials] = useState({ email: '', password: '' });
   const [error, setError] = useState('');
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // Simple authentication - in production, use backend authentication
-    if (credentials.username === 'admin' && credentials.password === 'admin123') {
+    setError('');
+    setLoading(true);
+
+    try {
+      const requestBody = {
+        email: credentials.email,
+        password: credentials.password,
+      };
+      
+      console.log('Sending login request:', {
+        url: 'http://localhost:5000/api/auth/login',
+        email: requestBody.email,
+        passwordProvided: !!requestBody.password
+      });
+
+      const response = await fetch('http://localhost:5000/api/auth/login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json',
+        },
+        body: JSON.stringify(requestBody),
+      });
+
+      console.log('Response status:', response.status);
+      console.log('Response headers:', Object.fromEntries(response.headers.entries()));
+
+      if (!response.ok) {
+        // Try to get error message from response
+        let errorMessage = 'Login failed';
+        try {
+          const data = await response.json();
+          errorMessage = data.message || errorMessage;
+        } catch (e) {
+          // If response is not JSON, use status text
+          errorMessage = response.statusText || errorMessage;
+        }
+        throw new Error(errorMessage);
+      }
+
+      const data = await response.json();
+
+      if (!data.token) {
+        throw new Error('No token received from server');
+      }
+
+      // Store token in localStorage
+      localStorage.setItem('adminToken', data.token);
       localStorage.setItem('adminAuth', 'true');
+      localStorage.setItem('adminData', JSON.stringify(data.data));
+
       navigate('/admin/dashboard');
-    } else {
-      setError('Invalid username or password');
+    } catch (error) {
+      console.error('Login error:', error);
+      
+      // More specific error messages
+      if (error.message.includes('fetch')) {
+        setError('Cannot connect to server. Make sure the backend is running on port 5000.');
+      } else {
+        setError(error.message || 'Invalid email or password');
+      }
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -34,14 +92,14 @@ function AdminLogin() {
         <form onSubmit={handleSubmit} className="space-y-6">
           <div>
             <label className="block text-sm font-medium text-dark-charcoal dark:text-creamy-white mb-2">
-              Username
+              Email
             </label>
             <input
-              type="text"
-              value={credentials.username}
-              onChange={(e) => setCredentials({ ...credentials, username: e.target.value })}
+              type="email"
+              value={credentials.email}
+              onChange={(e) => setCredentials({ ...credentials, email: e.target.value })}
               className="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-background-dark/50 text-dark-charcoal dark:text-creamy-white focus:outline-none focus:ring-2 focus:ring-primary"
-              placeholder="Enter username"
+              placeholder="Enter email"
               required
             />
           </div>
@@ -62,14 +120,15 @@ function AdminLogin() {
 
           <button
             type="submit"
-            className="w-full py-3 rounded-lg bg-primary text-white font-bold text-base hover:bg-primary/90 hover:scale-105 transition-all duration-300 shadow-lg hover:shadow-2xl"
+            disabled={loading}
+            className="w-full py-3 rounded-lg bg-primary text-white font-bold text-base hover:bg-primary/90 hover:scale-105 transition-all duration-300 shadow-lg hover:shadow-2xl disabled:opacity-50 disabled:cursor-not-allowed"
           >
-            Login
+            {loading ? 'Logging in...' : 'Login'}
           </button>
         </form>
 
         <div className="mt-6 text-center text-sm text-dark-charcoal/60 dark:text-creamy-white/60">
-          <p>Default: admin / admin123</p>
+          <p>Default: admin@svbuilders.com / Admin@123</p>
         </div>
       </div>
     </div>
