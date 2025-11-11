@@ -141,7 +141,130 @@ function parseProjectData(text, project) {
     data.numberOfFlats = data.totalUnits;
   }
 
+  // Extract nearby hotspots from location
+  data.nearbyHotspots = extractNearbyHotspots(data.location, text);
+
   return data;
+}
+
+// Function to extract nearby hotspots from location and text
+function extractNearbyHotspots(location, text) {
+  const hotspots = [];
+  const locationLower = (location || '').toLowerCase();
+  const textLower = (text || '').toLowerCase();
+
+  // Extract from location string
+  // Metro stations
+  if (locationLower.includes('vajarahalli metro') || (locationLower.includes('vajarahalli') && locationLower.includes('metro'))) {
+    hotspots.push({ name: "Vajarahalli Metro Station", distance: "250m", type: "Transport" });
+  }
+  if (locationLower.includes('metro')) {
+    const metroMatch = locationLower.match(/([a-z\s]+metro\s*station)/i);
+    if (metroMatch && !locationLower.includes('vajarahalli')) {
+      hotspots.push({ name: metroMatch[1].trim().replace(/\b\w/g, l => l.toUpperCase()), distance: "Nearby", type: "Transport" });
+    }
+  }
+
+  // Roads and main roads
+  if (locationLower.includes('kanakapura road')) {
+    hotspots.push({ name: "Kanakapura Road", distance: "On Main Road", type: "Transport" });
+  }
+  if (locationLower.includes('bilekahalli')) {
+    hotspots.push({ name: "Bilekahalli Main Road", distance: "On Main Road", type: "Transport" });
+  }
+  if (locationLower.includes('kodichikkanahalli')) {
+    hotspots.push({ name: "Kodichikkanahalli Main Road", distance: "On Main Road", type: "Transport" });
+  }
+
+  // Residential areas (map to Recreation type)
+  if (locationLower.includes('ramana shree enclave') || locationLower.includes('ramana')) {
+    hotspots.push({ name: "Ramana Shree Enclave", distance: "Nearby", type: "Recreation" });
+  }
+  if (locationLower.includes('bcchs layout')) {
+    hotspots.push({ name: "BCCHS Layout", distance: "In Layout", type: "Recreation" });
+  }
+
+  // Common Bangalore amenities based on location keywords
+  if (locationLower.includes('kanakapura') || locationLower.includes('vajarahalli')) {
+    hotspots.push(
+      { name: "Shopping Malls", distance: "2km - 5km", type: "Shopping" },
+      { name: "Hospitals", distance: "3km - 7km", type: "Healthcare" },
+      { name: "Schools & Colleges", distance: "2km - 6km", type: "Education" },
+      { name: "IT Parks", distance: "8km - 15km", type: "Business" },
+      { name: "Restaurants & Cafes", distance: "500m - 2km", type: "Shopping" }
+    );
+  }
+
+  if (locationLower.includes('bilekahalli') || locationLower.includes('kodichikkanahalli')) {
+    hotspots.push(
+      { name: "Shopping Centers", distance: "1km - 4km", type: "Shopping" },
+      { name: "Hospitals", distance: "2km - 6km", type: "Healthcare" },
+      { name: "Educational Institutions", distance: "1km - 5km", type: "Education" },
+      { name: "IT Corridors", distance: "5km - 12km", type: "Business" },
+      { name: "Entertainment Hubs", distance: "3km - 8km", type: "Recreation" }
+    );
+  }
+
+  // Extract from text if available
+  // Look for common patterns like "near", "close to", "adjacent to"
+  const nearPatterns = [
+    /(?:near|close to|adjacent to|opposite|beside)\s+([A-Z][a-z]+(?:\s+[A-Z][a-z]+)*)/gi,
+    /([A-Z][a-z]+(?:\s+[A-Z][a-z]+)*)\s+(?:metro|mall|hospital|school|college|market)/gi
+  ];
+
+  nearPatterns.forEach(pattern => {
+    const matches = text.match(pattern);
+    if (matches) {
+      matches.forEach(match => {
+        const place = match.replace(/(?:near|close to|adjacent to|opposite|beside)\s+/gi, '').trim();
+        if (place && place.length > 3 && place.length < 50) {
+          const type = getPlaceType(place, textLower);
+          if (!hotspots.find(h => h.name.toLowerCase() === place.toLowerCase())) {
+            hotspots.push({ name: place, distance: "Nearby", type: type });
+          }
+        }
+      });
+    }
+  });
+
+  // Remove duplicates and limit to 12
+  const uniqueHotspots = [];
+  const seen = new Set();
+  hotspots.forEach(h => {
+    const key = h.name.toLowerCase();
+    if (!seen.has(key) && uniqueHotspots.length < 12) {
+      seen.add(key);
+      uniqueHotspots.push(h);
+    }
+  });
+
+  return uniqueHotspots.length > 0 ? uniqueHotspots : null;
+}
+
+// Helper function to determine place type
+function getPlaceType(place, textLower) {
+  const placeLower = place.toLowerCase();
+  
+  if (placeLower.includes('metro') || placeLower.includes('station') || placeLower.includes('road')) {
+    return 'Transport';
+  }
+  if (placeLower.includes('mall') || placeLower.includes('market') || placeLower.includes('shopping')) {
+    return 'Shopping';
+  }
+  if (placeLower.includes('hospital') || placeLower.includes('clinic') || placeLower.includes('medical')) {
+    return 'Healthcare';
+  }
+  if (placeLower.includes('school') || placeLower.includes('college') || placeLower.includes('university') || placeLower.includes('education')) {
+    return 'Education';
+  }
+  if (placeLower.includes('it') || placeLower.includes('tech') || placeLower.includes('park') || placeLower.includes('business')) {
+    return 'Business';
+  }
+  if (placeLower.includes('park') || placeLower.includes('garden') || placeLower.includes('recreation')) {
+    return 'Recreation';
+  }
+  
+  return 'Transport'; // Default
 }
 
 // Main function

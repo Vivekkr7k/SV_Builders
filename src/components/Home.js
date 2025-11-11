@@ -3,24 +3,9 @@ import { Link } from 'react-router-dom';
 import Navbar from './Navbar';
 import Footer from './Footer';
 import { projects as allProjects } from '../data/projectsData';
+import heroImg from '../assets/hero_img.png';
 
 function App() {
-
-  // Bangalore-focused banner images
-  const carouselImages = [
-    {
-      url: "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=1920&q=100",
-      alt: "Modern residential building in Bangalore with contemporary architecture"
-    },
-    {
-      url: "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=1920&q=100",
-      alt: "Residential apartment complex in Bangalore with landscaped gardens"
-    },
-    {
-      url: "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?w=1920&q=100",
-      alt: "Premium residential project in Bangalore with modern amenities"
-    },
-  ];
 
 
   const scrollToInquiry = () => {
@@ -138,19 +123,8 @@ function App() {
           <section className="relative h-[500px] sm:h-[600px] md:h-[700px] lg:h-screen w-full flex items-center justify-center text-white overflow-hidden">
               <div className="absolute inset-0 bg-gradient-to-b from-black/50 via-black/40 to-black/60 z-[1]"></div>
             
-              {/* Carousel Banner Images */}
-            <div className="absolute inset-0 w-full h-full hero-carousel">
-              {carouselImages.map((img, index) => (
-                  <img
-                  key={index}
-                    src={img.url}
-                    alt={img.alt}
-                    className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 ${
-                      index === 0 ? 'opacity-100' : 'opacity-0'
-                    }`}
-                  />
-              ))}
-            </div>
+              {/* Hero Background Image */}
+            <div className="absolute inset-0 w-full h-full bg-center bg-no-repeat bg-cover" style={{ backgroundImage: `url(${heroImg})` }}></div>
             
             {/* Main Content */}
             <div className="relative z-10 flex flex-col items-center justify-center gap-4 sm:gap-6 md:gap-8 lg:gap-10 px-4 sm:px-6 md:px-8 w-full max-w-6xl mx-auto animate-fade-in py-8 sm:py-12 md:py-16">

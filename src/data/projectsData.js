@@ -17,25 +17,29 @@ function getDefaultNearbyHotspots(project) {
   const location = project.location?.toLowerCase() || '';
   const hotspots = [];
 
+  // Specific hotspots based on location keywords
+  if (location.includes('kanakapura') || location.includes('vajarahalli')) {
+    hotspots.push(
+      { name: "Vajarahalli Metro Station", distance: "250m", type: "Transport" },
+      { name: "Kanakapura Road", distance: "On Main Road", type: "Transport" }
+    );
+  } else {
+    // Common hotspots for other Bangalore projects
+    hotspots.push(
+      { name: "Metro Station", distance: "500m - 2km", type: "Transport" }
+    );
+  }
+
   // Common hotspots for all Bangalore projects
   hotspots.push(
-    { name: "Metro Station", distance: "500m - 2km", type: "Transport" },
     { name: "Shopping Mall", distance: "1km - 3km", type: "Shopping" },
     { name: "Hospital", distance: "2km - 5km", type: "Healthcare" },
     { name: "School", distance: "1km - 4km", type: "Education" }
   );
 
-  // Specific hotspots based on location keywords
-  if (location.includes('kanakapura') || location.includes('vajarahalli')) {
-    hotspots.push(
-      { name: "Vajarahalli Metro Station", distance: "Opposite", type: "Transport" },
-      { name: "Kanakapura Road", distance: "On Main Road", type: "Transport" }
-    );
-  }
-
   if (location.includes('bilekahalli') || location.includes('ramana')) {
     hotspots.push(
-      { name: "Ramana Shree Enclave", distance: "Nearby", type: "Residential" },
+      { name: "Ramana Shree Enclave", distance: "Nearby", type: "Recreation" },
       { name: "Bilekahalli", distance: "Main Road", type: "Transport" }
     );
   }
