@@ -144,7 +144,7 @@ function App() {
                 <div className="w-full flex flex-col sm:flex-row gap-4 justify-center items-center max-w-2xl mt-4 sm:mt-6">
                   <button
                     onClick={scrollToInquiry}
-                    className="flex w-full sm:w-auto cursor-pointer items-center justify-center overflow-hidden rounded-lg sm:rounded-xl h-12 sm:h-14 md:h-16 px-8 sm:px-10 md:px-12 bg-primary text-white text-sm sm:text-base md:text-lg font-bold leading-normal tracking-[0.02em] hover:bg-primary/90 hover:scale-105 transition-all duration-300 shadow-lg hover:shadow-2xl gap-2"
+                    className="flex w-full sm:w-auto cursor-pointer items-center justify-center overflow-hidden rounded-lg sm:rounded-xl h-12 sm:h-14 md:h-16 px-8 sm:px-10 md:px-12 bg-white/10 backdrop-blur-xl border-2 border-white/30 text-white text-sm sm:text-base md:text-lg font-bold leading-normal tracking-[0.02em] hover:bg-white/20 hover:scale-105 transition-all duration-300 shadow-lg hover:shadow-2xl gap-2"
                   >
                     <span>Get Free Consultation</span>
                     <span className="material-symbols-outlined">arrow_forward</span>
