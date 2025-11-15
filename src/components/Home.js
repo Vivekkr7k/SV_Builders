@@ -19,19 +19,37 @@ function App() {
 
   // State for carousel
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
+  const [isTransitioning, setIsTransitioning] = useState(false);
+  const [nextImageIndex, setNextImageIndex] = useState(0);
 
-  // Carousel auto-rotate
+  // Preload images to prevent flickering
+  useEffect(() => {
+    if (ongoingProjects.length > 0) {
+      ongoingProjects.forEach((project) => {
+        const img = new Image();
+        img.src = project.image;
+      });
+    }
+  }, [ongoingProjects]);
+
+  // Carousel auto-rotate with smooth transition
   useEffect(() => {
     if (ongoingProjects.length > 0) {
       const interval = setInterval(() => {
-        setCurrentImageIndex((prevIndex) => 
-          (prevIndex + 1) % ongoingProjects.length
-        );
+        const nextIndex = (currentImageIndex + 1) % ongoingProjects.length;
+        setNextImageIndex(nextIndex);
+        setIsTransitioning(true);
+        
+        // Start content fade out
+        setTimeout(() => {
+          setCurrentImageIndex(nextIndex);
+          setIsTransitioning(false);
+        }, 400); // Half of transition duration for content
       }, 5000); // Change image every 5 seconds
 
       return () => clearInterval(interval);
     }
-  }, [ongoingProjects.length]);
+  }, [currentImageIndex, ongoingProjects.length]);
 
   // Get current background image
   const currentBackgroundImage = ongoingProjects.length > 0 
@@ -199,13 +217,20 @@ function App() {
                       key={project.id}
                       src={project.image}
                       alt={`${project.title} - Background`}
-                      className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 ${
-                        index === currentImageIndex ? 'opacity-100 z-0' : 'opacity-0 z-[-1]'
+                      className={`hero-carousel-image absolute inset-0 w-full h-full object-cover ${
+                        index === currentImageIndex && !isTransitioning
+                          ? 'hero-image-active' 
+                          : index === nextImageIndex && isTransitioning
+                          ? 'hero-image-next'
+                          : index === currentImageIndex && isTransitioning
+                          ? 'hero-image-exit'
+                          : 'hero-image-hidden'
                       }`}
                       onError={(e) => {
                         e.target.src = heroImg;
                         e.target.onerror = null;
                       }}
+                      loading="eager"
                     />
                   ))
                 ) : (
@@ -226,11 +251,20 @@ function App() {
                   {ongoingProjects.map((_, index) => (
                     <button
                       key={index}
-                      onClick={() => setCurrentImageIndex(index)}
-                      className={`h-2 rounded-full transition-all duration-300 ${
+                      onClick={() => {
+                        if (index !== currentImageIndex) {
+                          setNextImageIndex(index);
+                          setIsTransitioning(true);
+                          setTimeout(() => {
+                            setCurrentImageIndex(index);
+                            setIsTransitioning(false);
+                          }, 400);
+                        }
+                      }}
+                      className={`h-2 rounded-full transition-all duration-500 ease-in-out ${
                         index === currentImageIndex 
-                          ? 'w-8 bg-white' 
-                          : 'w-2 bg-white/50 hover:bg-white/75'
+                          ? 'w-8 bg-white shadow-lg' 
+                          : 'w-2 bg-white/50 hover:bg-white/75 hover:w-3'
                       }`}
                       aria-label={`Go to slide ${index + 1}`}
                     ></button>
@@ -244,7 +278,12 @@ function App() {
                 
                 {/* Left Side - Content */}
                 {ongoingProjects.length > 0 && ongoingProjects[currentImageIndex] ? (
-                  <div key={ongoingProjects[currentImageIndex].id} className="flex flex-col gap-6 sm:gap-8 animate-fade-in">
+                  <div 
+                    key={`content-${currentImageIndex}-${ongoingProjects[currentImageIndex].id}`} 
+                    className={`hero-content flex flex-col gap-6 sm:gap-8 ${
+                      isTransitioning ? 'hero-content-exit' : 'hero-content-enter'
+                    }`}
+                  >
                     <div className="inline-block px-4 py-2 bg-white/10 backdrop-blur-md rounded-full border border-white/20 w-fit">
                       <span className="text-xs sm:text-sm font-semibold uppercase tracking-wider text-white">
                         Ongoing Projects

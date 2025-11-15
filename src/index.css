@@ -65,3 +65,149 @@ h1, h2, h3, h4, h5, h6 {
   50% { opacity: 0; }
   100% { opacity: 0; }
 }
+
+/* Smooth scroll behavior for the entire page */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Prevent flash of unstyled content during route changes */
+body {
+  overflow-x: hidden;
+}
+
+/* Page Transition Animations */
+.page-transition {
+  width: 100%;
+  min-height: 100vh;
+  transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out, visibility 0s linear 0.3s;
+  position: relative;
+  will-change: opacity, transform;
+}
+
+.page-hidden {
+  opacity: 0 !important;
+  visibility: hidden !important;
+  pointer-events: none !important;
+  transition: opacity 0s, visibility 0s, transform 0.3s ease-in-out;
+}
+
+.page-enter {
+  opacity: 1;
+  transform: translateY(0);
+  animation: pageFadeIn 0.4s ease-out forwards;
+  visibility: visible;
+  pointer-events: auto;
+  transition: opacity 0.4s ease-out, transform 0.4s ease-out, visibility 0s;
+}
+
+.page-exit {
+  opacity: 0;
+  transform: translateY(10px);
+  animation: pageFadeOut 0.3s ease-in forwards;
+  transition: opacity 0.3s ease-in, transform 0.3s ease-in, visibility 0s linear 0.3s;
+}
+
+@keyframes pageFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes pageFadeOut {
+  from {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  to {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+}
+
+/* Hero Carousel Smooth Transitions */
+.hero-carousel-image {
+  will-change: opacity, transform;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  transform: translateZ(0);
+  -webkit-transform: translateZ(0);
+}
+
+.hero-image-active {
+  opacity: 1;
+  z-index: 0;
+  transition: opacity 0.8s cubic-bezier(0.4, 0, 0.2, 1), transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+  transform: scale(1);
+}
+
+.hero-image-exit {
+  opacity: 0;
+  z-index: 0;
+  transition: opacity 0.8s cubic-bezier(0.4, 0, 0.2, 1), transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+  transform: scale(0.98);
+}
+
+.hero-image-next {
+  opacity: 0;
+  z-index: 1;
+  transition: opacity 0.8s cubic-bezier(0.4, 0, 0.2, 1), transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+  transform: scale(1.02);
+  animation: heroImageFadeIn 0.8s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+.hero-image-hidden {
+  opacity: 0;
+  z-index: -1;
+  transition: opacity 0.8s cubic-bezier(0.4, 0, 0.2, 1), transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+  transform: scale(1);
+  pointer-events: none;
+}
+
+@keyframes heroImageFadeIn {
+  from {
+    opacity: 0;
+    transform: scale(1.02);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* Hero Content Smooth Transitions */
+.hero-content {
+  will-change: opacity, transform;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+
+.hero-content-enter {
+  opacity: 1;
+  transform: translateY(0);
+  transition: opacity 0.6s cubic-bezier(0.4, 0, 0.2, 1), transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+  animation: heroContentFadeIn 0.6s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+.hero-content-exit {
+  opacity: 0;
+  transform: translateY(-15px);
+  transition: opacity 0.4s cubic-bezier(0.4, 0, 0.2, 1), transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  pointer-events: none;
+}
+
+@keyframes heroContentFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(15px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
