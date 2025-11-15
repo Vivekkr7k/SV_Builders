@@ -22,7 +22,7 @@ function AdminSidebar() {
               <path d="M12 1.5l-10 9v12h20v-12l-10-9zm0 2.3l8 7.2v9h-16v-9l8-7.2zm-4 9.5h8v2h-8v-2zm0 4h8v2h-8v-2z"></path>
             </svg>
           </div>
-          <h2 className="text-lg font-bold font-display text-dark-charcoal dark:text-creamy-white">SV Builders</h2>
+          <h2 className="text-lg font-bold font-display text-dark-charcoal dark:text-creamy-white">SV Builders and Developers</h2>
         </Link>
       </div>
 

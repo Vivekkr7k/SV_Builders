@@ -67,7 +67,7 @@ function About() {
               }}>
                 <div className="flex flex-col gap-2 sm:gap-3 text-center px-2">
                   <h1 className="text-white text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-display font-bold leading-tight tracking-tight">
-                    About SV Builders
+                    About SV Builders and Developers
                   </h1>
                   <h2 className="text-white text-sm sm:text-base md:text-lg font-body font-normal leading-normal">
                     Leading real estate developer in Bangalore with 25+ years of excellence in creating premium residential spaces.
@@ -108,7 +108,7 @@ function About() {
                     </div>
                   </div>
                   <div className="flex-1 pt-1">
-                    <p className="text-text-light dark:text-text-dark text-base sm:text-lg font-bold font-display mb-1">150+ Completed Projects</p>
+                    <p className="text-text-light dark:text-text-dark text-base sm:text-lg font-bold font-display mb-1">50+ Completed Projects</p>
                     <p className="text-gray-500 dark:text-gray-400 text-sm sm:text-base font-normal leading-normal">Across Prime Locations in Bangalore</p>
                   </div>
                 </div>
@@ -121,29 +121,51 @@ function About() {
                     </div>
                   </div>
                   <div className="flex-1 pt-1">
-                    <p className="text-text-light dark:text-text-dark text-base sm:text-lg font-bold font-display mb-1">5000+ Happy Clients</p>
+                    <p className="text-text-light dark:text-text-dark text-base sm:text-lg font-bold font-display mb-1">1000+ Happy Families</p>
                     <p className="text-gray-500 dark:text-gray-400 text-sm sm:text-base font-normal leading-normal">Trusted by Homebuyers Across Bangalore</p>
                   </div>
                 </div>
               </div>
             </div>
 
-            {/* Team Section */}
-            <div className="py-6 sm:py-8 md:py-10 text-center mb-8 sm:mb-12">
-              <h2 className="text-2xl sm:text-3xl font-display font-bold mb-6 sm:mb-8">Meet Our Experts</h2>
-              <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4 md:gap-6">
-                {team.map((member, index) => (
-                  <div key={index} className="group relative rounded-xl overflow-hidden">
-                    <div 
-                      className="bg-cover bg-center flex flex-col justify-end p-3 sm:p-4 aspect-square transition-transform duration-300 group-hover:scale-105" 
-                      style={{ backgroundImage: `url("${member.image}")` }}
-                    >
-                      <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
-                      <div className="relative text-white opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                        <p className="text-sm sm:text-lg font-bold leading-tight">{member.name}</p>
-                        <p className="text-xs sm:text-sm">{member.role}</p>
-                      </div>
+            {/* Proprietor's Words Section */}
+            <div className="py-6 sm:py-8 md:py-10 mb-8 sm:mb-12">
+              <h2 className="text-2xl sm:text-3xl font-display font-bold mb-6 sm:mb-8 text-center">Proprietor's Words</h2>
+              <div className="bg-creamy-white dark:bg-light-taupe/20 rounded-xl p-6 sm:p-8 md:p-10 shadow-lg">
+                <div className="max-w-3xl mx-auto">
+                  <p className="text-text-light dark:text-text-dark text-base sm:text-lg leading-relaxed mb-6 italic">
+                    "At SV Builders and Developers, we believe that a home is more than just a structure—it's a foundation for dreams, a sanctuary for families, and a legacy for generations. With over 25 years of experience in the real estate industry, we have been committed to creating premium residential spaces that blend modern architecture with timeless quality.
+                  </p>
+                  <p className="text-text-light dark:text-text-dark text-base sm:text-lg leading-relaxed mb-6">
+                    Our journey began with a simple vision: to transform the way people live in Bangalore by delivering exceptional homes in prime locations. Every project we undertake is built with meticulous attention to detail, using premium materials and world-class amenities. We take pride in our RERA-approved projects and our track record of timely delivery.
+                  </p>
+                  <p className="text-text-light dark:text-text-dark text-base sm:text-lg leading-relaxed">
+                    What sets us apart is our unwavering commitment to customer satisfaction. We don't just build homes; we build relationships. Our team works closely with each client to understand their unique needs and deliver solutions that exceed expectations. As we continue to grow, our core values of integrity, quality, and transparency remain at the heart of everything we do."
+                  </p>
+                  <p className="text-right mt-6 font-bold text-text-light dark:text-text-dark text-base sm:text-lg">
+                    — Proprietor, SV Builders and Developers
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            {/* Testimonials Section */}
+            <div className="py-6 sm:py-8 md:py-10 mb-8 sm:mb-12">
+              <h2 className="text-2xl sm:text-3xl font-display font-bold mb-6 sm:mb-8 text-center">What Our Families Say</h2>
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8">
+                {testimonials.map((testimonial, index) => (
+                  <div key={index} className="bg-creamy-white dark:bg-light-taupe/20 rounded-xl p-6 sm:p-8 shadow-lg">
+                    <div className="flex items-center mb-4">
+                      <span className="material-symbols-outlined text-primary text-2xl sm:text-3xl">star</span>
+                      <span className="material-symbols-outlined text-primary text-2xl sm:text-3xl">star</span>
+                      <span className="material-symbols-outlined text-primary text-2xl sm:text-3xl">star</span>
+                      <span className="material-symbols-outlined text-primary text-2xl sm:text-3xl">star</span>
+                      <span className="material-symbols-outlined text-primary text-2xl sm:text-3xl">star</span>
                     </div>
+                    <p className="text-text-light dark:text-text-dark mb-4 italic leading-relaxed">
+                      "{testimonial.text}"
+                    </p>
+                    <p className="font-bold text-text-light dark:text-text-dark">{testimonial.name}</p>
                   </div>
                 ))}
               </div>
@@ -165,7 +187,7 @@ function About() {
                       Our Mission & Values
                     </h1>
                     <p className="text-text-light dark:text-text-dark text-sm sm:text-base font-normal leading-relaxed">
-                      SV Builders is committed to creating premium residential spaces that enhance quality of life in Bangalore. With over 25 years of experience, we have established ourselves as a trusted name in real estate development. Our mission is to deliver quality construction, timely completion, and exceptional customer service while maintaining the highest standards of integrity and transparency.
+                      SV Builders and Developers is committed to creating premium residential spaces that enhance quality of life in Bangalore. With over 25 years of experience, we have established ourselves as a trusted name in real estate development. Our mission is to deliver quality construction, timely completion, and exceptional customer service while maintaining the highest standards of integrity and transparency.
                     </p>
                   </div>
                   <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4">
@@ -199,15 +221,15 @@ function About() {
             <div className="py-6 sm:py-8 md:py-10 mb-8 sm:mb-12">
               <div className="space-y-6">
                 <div>
-                  <h2 className="text-2xl sm:text-3xl font-display font-bold mb-4">Why Choose SV Builders?</h2>
+                  <h2 className="text-2xl sm:text-3xl font-display font-bold mb-4">Why Choose SV Builders and Developers?</h2>
                   <p className="text-gray-600 dark:text-gray-400 leading-relaxed mb-4">
-                    SV Builders has been a trusted name in Bangalore's real estate sector for over 25 years. We specialize in developing premium residential projects across prime locations including HSR Layout, Koramangala, Whitefield, Electronic City, and Yelahanka.
+                    SV Builders and Developers has been a trusted name in Bangalore's real estate sector for over 25 years. We specialize in developing premium residential projects across prime locations including HSR Layout, Koramangala, Whitefield, Electronic City, and Yelahanka.
                   </p>
                   <p className="text-gray-600 dark:text-gray-400 leading-relaxed mb-4">
-                    Our commitment to quality construction, timely delivery, and customer satisfaction has earned us the trust of over 5000 happy clients. Every project we undertake is RERA approved and built with premium materials, modern amenities, and sustainable practices.
+                    Our commitment to quality construction, timely delivery, and customer satisfaction has earned us the trust of over 1000+ happy families. Every project we undertake is RERA approved and built with premium materials, modern amenities, and sustainable practices.
                   </p>
                   <p className="text-gray-600 dark:text-gray-400 leading-relaxed">
-                    Whether you're looking for a 2 BHK apartment in a bustling IT corridor or a spacious 4 BHK villa in a serene neighborhood, SV Builders offers residential solutions tailored to your lifestyle and budget. We also provide turnkey individual home construction services for those seeking custom-designed homes.
+                    Whether you're looking for a 2 BHK apartment in a bustling IT corridor or a spacious 4 BHK villa in a serene neighborhood, SV Builders and Developers offers residential solutions tailored to your lifestyle and budget. We also provide turnkey individual home construction services for those seeking custom-designed homes.
                   </p>
                 </div>
               </div>

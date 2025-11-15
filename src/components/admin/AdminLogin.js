@@ -80,7 +80,7 @@ function AdminLogin() {
       <div className="bg-white dark:bg-background-dark rounded-xl shadow-2xl p-8 md:p-12 w-full max-w-md">
         <div className="text-center mb-8">
           <h1 className="text-3xl font-bold font-display text-dark-charcoal dark:text-creamy-white mb-2">Admin Login</h1>
-          <p className="text-dark-charcoal/70 dark:text-creamy-white/70">SV Builders Admin Panel</p>
+          <p className="text-dark-charcoal/70 dark:text-creamy-white/70">SV Builders and Developers Admin Panel</p>
         </div>
         
         {error && (

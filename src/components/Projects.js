@@ -100,7 +100,11 @@ function Projects() {
                           </div>
                         </div>
                       </div>
-                      <Link to={`/project/${project.id}`} className="text-primary font-bold mt-4 inline-flex items-center gap-2 hover:gap-4 transition-all">
+                      <Link 
+                        to={`/project/${project.id}`} 
+                        className="text-primary font-bold mt-4 inline-flex items-center gap-2 hover:gap-4 transition-all"
+                        title={`View details of ${project.title}`}
+                      >
                         View Details
                         <span className="material-symbols-outlined text-lg">arrow_forward</span>
                       </Link>

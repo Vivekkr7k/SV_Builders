@@ -140,21 +140,25 @@ function ProjectDetails() {
             <div className="mb-16" id="gallery">
               <h2 className="text-3xl font-serif font-bold mb-8 text-center text-gray-800 dark:text-gray-200">Gallery</h2>
               <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                  {galleryImages.slice(0, 5).map((img, index) => (
-                    <div 
-                      key={index}
-                      className={index === 0 ? "col-span-2 row-span-2 rounded-xl overflow-hidden" : "rounded-xl overflow-hidden"}
-                    >
-                      <img 
-                        alt={`${project.title} - ${index === 0 ? 'Exterior view' : 'Gallery image'} ${index + 1}`} 
-                    className="w-full h-full object-cover transition-transform duration-300 hover:scale-105" 
-                        src={img}
-                        onError={(e) => {
-                          e.target.src = 'https://via.placeholder.com/400x300?text=Image+Loading';
-                        }}
-                  />
-                </div>
-                  ))}
+                  {galleryImages.slice(0, 5).map((img, index) => {
+                    const isElevation = img.toLowerCase().includes('elevation') || img.toLowerCase().includes('elvn');
+                    return (
+                      <div 
+                        key={index}
+                        className={index === 0 ? "col-span-2 row-span-2 rounded-xl overflow-hidden" : "rounded-xl overflow-hidden"}
+                      >
+                        <img 
+                          alt={`${project.title} - ${index === 0 ? 'Exterior view' : 'Gallery image'} ${index + 1}`}
+                          title={isElevation ? `${project.title} - Building Elevation View` : `${project.title} - ${index === 0 ? 'Exterior View' : `Gallery Image ${index + 1}`}`}
+                          className="w-full h-full object-cover transition-transform duration-300 hover:scale-105" 
+                          src={img}
+                          onError={(e) => {
+                            e.target.src = 'https://via.placeholder.com/400x300?text=Image+Loading';
+                          }}
+                        />
+                      </div>
+                    );
+                  })}
                 </div>
               </div>
             )}
@@ -543,30 +547,38 @@ function ProjectDetails() {
                   <div className="mt-12">
                     <h3 className="text-xl font-bold mb-6 text-center text-gray-800 dark:text-gray-200">Additional Plans</h3>
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                      {other3DPlans.map((plan, index) => (
-                        <div key={`3d-${index}`} className="rounded-xl overflow-hidden shadow-lg bg-creamy-white dark:bg-gray-800 p-4">
-                          <img 
-                            alt={`${project.title} - Additional 3D Plan ${index + 1}`} 
-                            className="w-full h-auto rounded-lg" 
-                            src={plan}
-                            onError={(e) => {
-                              e.target.src = 'https://via.placeholder.com/400x300?text=3D+Plan';
-                            }}
-                          />
-                        </div>
-                      ))}
-                      {other2DPlans.map((plan, index) => (
-                        <div key={`2d-${index}`} className="rounded-xl overflow-hidden shadow-lg bg-creamy-white dark:bg-gray-800 p-4">
-                          <img 
-                            alt={`${project.title} - Additional 2D Plan ${index + 1}`} 
-                            className="w-full h-auto rounded-lg" 
-                            src={plan}
-                            onError={(e) => {
-                              e.target.src = 'https://via.placeholder.com/400x300?text=2D+Plan';
-                            }}
-                          />
-                        </div>
-                      ))}
+                      {other3DPlans.map((plan, index) => {
+                        const isElevation = plan.toLowerCase().includes('elevation') || plan.toLowerCase().includes('elvn');
+                        return (
+                          <div key={`3d-${index}`} className="rounded-xl overflow-hidden shadow-lg bg-creamy-white dark:bg-gray-800 p-4">
+                            <img 
+                              alt={`${project.title} - Additional 3D Plan ${index + 1}`}
+                              title={isElevation ? `${project.title} - Building Elevation View ${index + 1}` : `${project.title} - 3D Floor Plan ${index + 1}`}
+                              className="w-full h-auto rounded-lg" 
+                              src={plan}
+                              onError={(e) => {
+                                e.target.src = 'https://via.placeholder.com/400x300?text=3D+Plan';
+                              }}
+                            />
+                          </div>
+                        );
+                      })}
+                      {other2DPlans.map((plan, index) => {
+                        const isElevation = plan.toLowerCase().includes('elevation') || plan.toLowerCase().includes('elvn');
+                        return (
+                          <div key={`2d-${index}`} className="rounded-xl overflow-hidden shadow-lg bg-creamy-white dark:bg-gray-800 p-4">
+                            <img 
+                              alt={`${project.title} - Additional 2D Plan ${index + 1}`}
+                              title={isElevation ? `${project.title} - Building Elevation View ${index + 1}` : `${project.title} - 2D Floor Plan ${index + 1}`}
+                              className="w-full h-auto rounded-lg" 
+                              src={plan}
+                              onError={(e) => {
+                                e.target.src = 'https://via.placeholder.com/400x300?text=2D+Plan';
+                              }}
+                            />
+                          </div>
+                        );
+                      })}
                     </div>
                   </div>
                 )}
@@ -598,7 +610,7 @@ function ProjectDetails() {
                   <iframe
                     className="absolute top-0 left-0 w-full h-full border-0"
                     title={`Map showing ${project.title} location`}
-                    src={`https://www.google.com/maps?q=${encodeURIComponent(exactLocation || project.location || 'Bangalore, Karnataka, India')}&output=embed`}
+                    src={`https://www.google.com/maps?q=${encodeURIComponent(exactLocation || project.location || 'Bangalore, Karnataka, India')}&output=embed&z=15&t=m`}
                     allowFullScreen
                     loading="lazy"
                     referrerPolicy="no-referrer-when-downgrade"

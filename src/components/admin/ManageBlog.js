@@ -95,7 +95,7 @@ function ManageBlog() {
         excerpt: formData.description,
         content: formData.content,
         featuredImage: formData.image,
-        author: formData.author || 'SV Builders',
+        author: formData.author || 'SV Builders and Developers',
         category: formData.category,
         published: formData.published || false
       };

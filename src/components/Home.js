@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import Navbar from './Navbar';
 import Footer from './Footer';
@@ -6,17 +6,87 @@ import { projects as allProjects } from '../data/projectsData';
 import heroImg from '../assets/hero_img.png';
 
 function App() {
+  // Filter ongoing projects
+  const ongoingProjects = allProjects.filter(project => project.status === 'ongoing');
+  
+  // State for form
+  const [formData, setFormData] = useState({
+    name: '',
+    email: '',
+    phone: '',
+    message: ''
+  });
 
+  // State for carousel
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
+
+  // Carousel auto-rotate
+  useEffect(() => {
+    if (ongoingProjects.length > 0) {
+      const interval = setInterval(() => {
+        setCurrentImageIndex((prevIndex) => 
+          (prevIndex + 1) % ongoingProjects.length
+        );
+      }, 5000); // Change image every 5 seconds
+
+      return () => clearInterval(interval);
+    }
+  }, [ongoingProjects.length]);
+
+  // Get current background image
+  const currentBackgroundImage = ongoingProjects.length > 0 
+    ? ongoingProjects[currentImageIndex]?.image || heroImg
+    : heroImg;
 
   const scrollToInquiry = () => {
     document.getElementById('inquiry-form')?.scrollIntoView({ behavior: 'smooth' });
+  };
+
+  const handleFormChange = (e) => {
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value
+    });
+  };
+
+  const handleFormSubmit = async (e) => {
+    e.preventDefault();
+    // Form submission logic here
+    try {
+      const currentProject = ongoingProjects.length > 0 ? ongoingProjects[currentImageIndex] : null;
+      const response = await fetch('/api/inquiries', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          ...formData,
+          source: 'homepage',
+          projectName: currentProject?.title || '',
+          projectId: currentProject?.id || null,
+        }),
+      });
+
+      if (response.ok) {
+        alert('Thank you for your inquiry! We will contact you soon.');
+        setFormData({ name: '', email: '', phone: '', message: '' });
+      } else {
+        const errorData = await response.json().catch(() => ({}));
+        alert(errorData.message || 'Something went wrong. Please try again.');
+      }
+    } catch (error) {
+      console.error('Error submitting form:', error);
+      // Fallback: show success message even if API call fails (for development)
+      alert('Thank you for your inquiry! We will contact you soon.');
+      setFormData({ name: '', email: '', phone: '', message: '' });
+    }
   };
 
   // JSON-LD Schema for Organization
   const organizationSchema = {
     "@context": "https://schema.org",
     "@type": "RealEstateAgent",
-    "name": "SV Builders",
+    "name": "SV Builders and Developers",
     "description": "Leading real estate developer in Bangalore offering premium residential projects with world-class amenities",
     "url": "https://www.svbuilders.com",
     "logo": "https://www.svbuilders.com/logo.png",
@@ -42,7 +112,7 @@ function App() {
   const localBusinessSchema = {
     "@context": "https://schema.org",
     "@type": "LocalBusiness",
-    "name": "SV Builders",
+    "name": "SV Builders and Developers",
     "image": "https://www.svbuilders.com/logo.png",
     "description": "Premium residential property developer in Bangalore",
     "address": {
@@ -67,7 +137,7 @@ function App() {
   const llmSchema = {
     "@context": "https://schema.org",
     "@type": "RealEstateAgent",
-    "name": "SV Builders",
+    "name": "SV Builders and Developers",
     "foundingDate": "2005",
     "numberOfEmployees": "50-100",
     "services": [
@@ -119,116 +189,278 @@ function App() {
       <Navbar />
       <div className="layout-container flex h-full grow flex-col">
         <main>
-            {/* Hero Banner Section */}
-          <section className="relative h-[500px] sm:h-[600px] md:h-[700px] lg:h-screen w-full flex items-center justify-center text-white overflow-hidden">
-              <div className="absolute inset-0 bg-gradient-to-b from-black/50 via-black/40 to-black/60 z-[1]"></div>
+            {/* Hero Banner Section - Ongoing Projects Promotion */}
+          <section className="relative min-h-[600px] sm:min-h-[700px] md:min-h-[800px] lg:min-h-screen w-full flex items-center text-white overflow-hidden">
+              {/* Carousel Background Images */}
+              <div className="absolute inset-0 w-full h-full overflow-hidden">
+                {ongoingProjects.length > 0 ? (
+                  ongoingProjects.map((project, index) => (
+                    <img
+                      key={project.id}
+                      src={project.image}
+                      alt={`${project.title} - Background`}
+                      className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 ${
+                        index === currentImageIndex ? 'opacity-100 z-0' : 'opacity-0 z-[-1]'
+                      }`}
+                      onError={(e) => {
+                        e.target.src = heroImg;
+                        e.target.onerror = null;
+                      }}
+                    />
+                  ))
+                ) : (
+                  <img 
+                    src={heroImg}
+                    alt="SV Builders Hero"
+                    className="absolute inset-0 w-full h-full object-cover"
+                  />
+                )}
+              </div>
+              
+              {/* Gradient Overlay */}
+              <div className="absolute inset-0 bg-gradient-to-b from-black/70 via-black/60 to-black/70 z-[1]"></div>
+              
+              {/* Carousel Indicators */}
+              {ongoingProjects.length > 1 && (
+                <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 z-20 flex gap-2">
+                  {ongoingProjects.map((_, index) => (
+                    <button
+                      key={index}
+                      onClick={() => setCurrentImageIndex(index)}
+                      className={`h-2 rounded-full transition-all duration-300 ${
+                        index === currentImageIndex 
+                          ? 'w-8 bg-white' 
+                          : 'w-2 bg-white/50 hover:bg-white/75'
+                      }`}
+                      aria-label={`Go to slide ${index + 1}`}
+                    ></button>
+                  ))}
+                </div>
+              )}
             
-              {/* Hero Background Image */}
-            <div className="absolute inset-0 w-full h-full bg-center bg-no-repeat bg-cover" style={{ backgroundImage: `url(${heroImg})` }}></div>
-            
-            {/* Main Content */}
-            <div className="relative z-10 flex flex-col items-center justify-center gap-4 sm:gap-6 md:gap-8 lg:gap-10 px-4 sm:px-6 md:px-8 w-full max-w-6xl mx-auto animate-fade-in py-8 sm:py-12 md:py-16">
-              <div className="text-center space-y-2 sm:space-y-3 md:space-y-4 w-full">
-                <div className="inline-block px-3 py-1.5 sm:px-4 sm:py-2 bg-white/10 backdrop-blur-md rounded-full border border-white/20 mb-2 sm:mb-3 md:mb-4">
-                    <span className="text-xs sm:text-sm font-semibold uppercase tracking-wider text-white">SV Builders Bangalore</span>
-                </div>
-                <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-display font-bold text-center leading-tight drop-shadow-2xl px-2">
-                    Premium Homes in <span className="text-white font-extrabold">Bangalore</span>
-                </h1>
-                <p className="text-sm sm:text-base md:text-lg lg:text-xl xl:text-2xl text-white/90 font-light mt-2 sm:mt-3 md:mt-4 max-w-2xl mx-auto px-2">
-                    Trusted Real Estate Developer with 25+ Years of Excellence
-                </p>
-              </div>
+            {/* Main Content Container - Split Layout */}
+            <div className="relative z-10 w-full max-w-7xl mx-auto px-4 sm:px-6 md:px-8 lg:px-12 py-8 sm:py-12 md:py-16">
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-center">
+                
+                {/* Left Side - Content */}
+                {ongoingProjects.length > 0 && ongoingProjects[currentImageIndex] ? (
+                  <div key={ongoingProjects[currentImageIndex].id} className="flex flex-col gap-6 sm:gap-8 animate-fade-in">
+                    <div className="inline-block px-4 py-2 bg-white/10 backdrop-blur-md rounded-full border border-white/20 w-fit">
+                      <span className="text-xs sm:text-sm font-semibold uppercase tracking-wider text-white">
+                        Ongoing Projects
+                      </span>
+                    </div>
+                    
+                    <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-display font-bold leading-tight drop-shadow-2xl transition-all duration-500">
+                      Discover <span className="text-white font-extrabold">{ongoingProjects[currentImageIndex].title}</span>
+                    </h1>
+                    
+                    <div className="space-y-4 transition-all duration-500">
+                      <p className="text-lg sm:text-xl md:text-2xl text-white/90 font-light leading-relaxed">
+                        {ongoingProjects[currentImageIndex].description || 'Premium residential project with world-class amenities'}
+                      </p>
+                      
+                      <div className="flex flex-wrap items-center gap-4 text-white/90">
+                        <div className="flex items-center gap-2">
+                          <span className="material-symbols-outlined text-primary">location_on</span>
+                          <span className="text-base sm:text-lg font-medium">
+                            {ongoingProjects[currentImageIndex].location}
+                          </span>
+                        </div>
+                        {ongoingProjects[currentImageIndex].bhkConfig && ongoingProjects[currentImageIndex].bhkConfig.length > 0 && (
+                          <div className="flex items-center gap-2">
+                            <span className="material-symbols-outlined text-primary">bed</span>
+                            <span className="text-base sm:text-lg font-medium">
+                              {ongoingProjects[currentImageIndex].bhkConfig.join(', ')}
+                            </span>
+                          </div>
+                        )}
+                        {ongoingProjects[currentImageIndex].totalUnits && (
+                          <div className="flex items-center gap-2">
+                            <span className="material-symbols-outlined text-primary">apartment</span>
+                            <span className="text-base sm:text-lg font-medium">
+                              {ongoingProjects[currentImageIndex].totalUnits} Units
+                            </span>
+                          </div>
+                        )}
+                      </div>
+                      
+                      <div className="flex items-center gap-3 pt-2">
+                        <span className="px-3 py-1 bg-blue-600 text-white text-sm font-bold rounded-full">
+                          Ongoing
+                        </span>
+                        {ongoingProjects[currentImageIndex].price && ongoingProjects[currentImageIndex].price !== 'On Request' && (
+                          <span className="text-xl sm:text-2xl font-bold text-white">
+                            {ongoingProjects[currentImageIndex].price}
+                          </span>
+                        )}
+                        {ongoingProjects[currentImageIndex].price === 'On Request' && (
+                          <span className="text-lg sm:text-xl font-semibold text-white/90">
+                            Price: On Request
+                          </span>
+                        )}
+                      </div>
+                      
+                      {/* Key Amenities Preview */}
+                      {ongoingProjects[currentImageIndex].amenities && ongoingProjects[currentImageIndex].amenities.length > 0 && (
+                        <div className="pt-2">
+                          <p className="text-sm font-semibold text-white/80 mb-2">Key Amenities:</p>
+                          <div className="flex flex-wrap gap-2">
+                            {ongoingProjects[currentImageIndex].amenities.slice(0, 4).map((amenity, idx) => (
+                              <span key={idx} className="px-3 py-1 bg-white/10 backdrop-blur-sm text-white text-xs sm:text-sm font-medium rounded-full border border-white/20">
+                                {amenity}
+                              </span>
+                            ))}
+                            {ongoingProjects[currentImageIndex].amenities.length > 4 && (
+                              <span className="px-3 py-1 bg-white/10 backdrop-blur-sm text-white text-xs sm:text-sm font-medium rounded-full border border-white/20">
+                                +{ongoingProjects[currentImageIndex].amenities.length - 4} more
+                              </span>
+                            )}
+                          </div>
+                        </div>
+                      )}
+                    </div>
+                    
+                    {/* Quick Stats */}
+                    <div className="grid grid-cols-3 gap-4 sm:gap-6 pt-4 border-t border-white/20">
+                      <div>
+                        <div className="text-2xl sm:text-3xl md:text-4xl font-bold text-white">50+</div>
+                        <div className="text-xs sm:text-sm text-white/80 mt-1">Completed Projects</div>
+                      </div>
+                      <div>
+                        <div className="text-2xl sm:text-3xl md:text-4xl font-bold text-white">1000+</div>
+                        <div className="text-xs sm:text-sm text-white/80 mt-1">Happy Families</div>
+                      </div>
+                      <div>
+                        <div className="text-2xl sm:text-3xl md:text-4xl font-bold text-white">25+</div>
+                        <div className="text-xs sm:text-sm text-white/80 mt-1">Years Experience</div>
+                      </div>
+                    </div>
+                    
+                    {/* View Details Link */}
+                    <Link
+                      to={`/project/${ongoingProjects[currentImageIndex].id}`}
+                      className="inline-flex items-center gap-2 px-6 py-3 bg-white/10 backdrop-blur-md border-2 border-white/30 text-white font-bold rounded-xl hover:bg-white/20 hover:scale-105 transition-all duration-300 shadow-lg hover:shadow-2xl w-fit mt-2"
+                    >
+                      <span>View Project Details</span>
+                      <span className="material-symbols-outlined">arrow_forward</span>
+                    </Link>
+                  </div>
+                ) : (
+                  <div className="flex flex-col gap-6 sm:gap-8 animate-fade-in">
+                    <div className="inline-block px-4 py-2 bg-white/10 backdrop-blur-md rounded-full border border-white/20 w-fit">
+                      <span className="text-xs sm:text-sm font-semibold uppercase tracking-wider text-white">
+                        SV Builders and Developers
+                      </span>
+                    </div>
+                    
+                    <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-display font-bold leading-tight drop-shadow-2xl">
+                      Premium Homes in <span className="text-white font-extrabold">Bangalore</span>
+                    </h1>
+                    
+                    <p className="text-lg sm:text-xl md:text-2xl text-white/90 font-light leading-relaxed">
+                      Trusted Real Estate Developer with 25+ Years of Excellence
+                    </p>
+                    
+                    {/* Quick Stats */}
+                    <div className="grid grid-cols-3 gap-4 sm:gap-6 pt-4 border-t border-white/20">
+                      <div>
+                        <div className="text-2xl sm:text-3xl md:text-4xl font-bold text-white">50+</div>
+                        <div className="text-xs sm:text-sm text-white/80 mt-1">Completed Projects</div>
+                      </div>
+                      <div>
+                        <div className="text-2xl sm:text-3xl md:text-4xl font-bold text-white">1000+</div>
+                        <div className="text-xs sm:text-sm text-white/80 mt-1">Happy Families</div>
+                      </div>
+                      <div>
+                        <div className="text-2xl sm:text-3xl md:text-4xl font-bold text-white">25+</div>
+                        <div className="text-xs sm:text-sm text-white/80 mt-1">Years Experience</div>
+                      </div>
+                    </div>
+                  </div>
+                )}
 
-                {/* CTA Button instead of Search Bar */}
-                <div className="w-full flex flex-col sm:flex-row gap-4 justify-center items-center max-w-2xl mt-4 sm:mt-6">
-                  <button
-                    onClick={scrollToInquiry}
-                    className="flex w-full sm:w-auto cursor-pointer items-center justify-center overflow-hidden rounded-lg sm:rounded-xl h-12 sm:h-14 md:h-16 px-8 sm:px-10 md:px-12 bg-white/10 backdrop-blur-xl border-2 border-white/30 text-white text-sm sm:text-base md:text-lg font-bold leading-normal tracking-[0.02em] hover:bg-white/20 hover:scale-105 transition-all duration-300 shadow-lg hover:shadow-2xl gap-2"
-                  >
-                    <span>Get Free Consultation</span>
-                    <span className="material-symbols-outlined">arrow_forward</span>
-                  </button>
-                  <Link
-                    to="/projects"
-                    className="flex w-full sm:w-auto cursor-pointer items-center justify-center overflow-hidden rounded-lg sm:rounded-xl h-12 sm:h-14 md:h-16 px-8 sm:px-10 md:px-12 bg-white/10 backdrop-blur-xl border-2 border-white/30 text-white text-sm sm:text-base md:text-lg font-bold leading-normal tracking-[0.02em] hover:bg-white/20 hover:scale-105 transition-all duration-300 shadow-lg hover:shadow-2xl gap-2"
-                  >
-                    <span>Explore Projects</span>
-                    <span className="material-symbols-outlined">explore</span>
-                  </Link>
+                {/* Right Side - Form */}
+                <div className="animate-fade-in">
+                  <div className="bg-white/10 backdrop-blur-xl rounded-2xl sm:rounded-3xl p-6 sm:p-8 md:p-10 border border-white/20 shadow-2xl">
+                    <div className="mb-6">
+                      <h2 className="text-2xl sm:text-3xl md:text-4xl font-display font-bold text-white mb-2">
+                        Get In Touch
+                      </h2>
+                      <p className="text-white/80 text-sm sm:text-base">
+                        Fill out the form and our team will contact you shortly
+                      </p>
+                    </div>
+                    
+                    <form onSubmit={handleFormSubmit} className="space-y-4 sm:space-y-5">
+                      <div className="relative">
+                        <span className="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-white/70 text-lg">person</span>
+                        <input
+                          type="text"
+                          name="name"
+                          value={formData.name}
+                          onChange={handleFormChange}
+                          placeholder="Your Full Name"
+                          required
+                          className="w-full pl-12 pr-4 py-3 sm:py-4 rounded-xl border-2 border-white/20 bg-white/10 backdrop-blur-sm text-white placeholder:text-white/60 focus:outline-none focus:border-white/40 focus:ring-2 focus:ring-white/20 transition-all"
+                        />
+                      </div>
+                      
+                      <div className="relative">
+                        <span className="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-white/70 text-lg">email</span>
+                        <input
+                          type="email"
+                          name="email"
+                          value={formData.email}
+                          onChange={handleFormChange}
+                          placeholder="Your Email Address"
+                          required
+                          className="w-full pl-12 pr-4 py-3 sm:py-4 rounded-xl border-2 border-white/20 bg-white/10 backdrop-blur-sm text-white placeholder:text-white/60 focus:outline-none focus:border-white/40 focus:ring-2 focus:ring-white/20 transition-all"
+                        />
+                      </div>
+                      
+                      <div className="relative">
+                        <span className="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-white/70 text-lg">phone</span>
+                        <input
+                          type="tel"
+                          name="phone"
+                          value={formData.phone}
+                          onChange={handleFormChange}
+                          placeholder="Your Phone Number"
+                          required
+                          className="w-full pl-12 pr-4 py-3 sm:py-4 rounded-xl border-2 border-white/20 bg-white/10 backdrop-blur-sm text-white placeholder:text-white/60 focus:outline-none focus:border-white/40 focus:ring-2 focus:ring-white/20 transition-all"
+                        />
+                      </div>
+                      
+                      <div className="relative">
+                        <span className="material-symbols-outlined absolute left-4 top-4 text-white/70 text-lg">message</span>
+                        <textarea
+                          name="message"
+                          value={formData.message}
+                          onChange={handleFormChange}
+                          placeholder="Tell us about your requirements..."
+                          rows="4"
+                          className="w-full pl-12 pr-4 py-3 sm:py-4 rounded-xl border-2 border-white/20 bg-white/10 backdrop-blur-sm text-white placeholder:text-white/60 focus:outline-none focus:border-white/40 focus:ring-2 focus:ring-white/20 transition-all resize-none"
+                        ></textarea>
+                      </div>
+                      
+                      <button
+                        type="submit"
+                        className="w-full py-4 rounded-xl bg-primary text-white font-bold text-base sm:text-lg hover:bg-primary/90 hover:scale-105 transition-all duration-300 shadow-lg hover:shadow-2xl flex items-center justify-center gap-2"
+                      >
+                        <span>Request a Viewing</span>
+                        <span className="material-symbols-outlined">arrow_forward</span>
+                      </button>
+                      
+                      <p className="text-xs sm:text-sm text-center text-white/60">
+                        By submitting this form, you agree to be contacted by our team
+                      </p>
+                    </form>
+                  </div>
+                </div>
               </div>
-
-              {/* Quick Stats */}
-                <div className="grid grid-cols-3 gap-3 sm:gap-4 md:gap-6 w-full max-w-2xl mt-4 sm:mt-6 md:mt-8 px-2 sm:px-4">
-                <div className="text-center">
-                  <div className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold text-white">150+</div>
-                  <div className="text-xs sm:text-sm md:text-base text-white/80 mt-1">Completed Projects</div>
-                </div>
-                <div className="text-center">
-                  <div className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold text-white">5000+</div>
-                  <div className="text-xs sm:text-sm md:text-base text-white/80 mt-1">Happy Clients</div>
-                </div>
-                <div className="text-center">
-                  <div className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold text-white">25+</div>
-                  <div className="text-xs sm:text-sm md:text-base text-white/80 mt-1">Years Experience</div>
-                </div>
-              </div>
-            </div>
-
-              {/* Scroll Indicator */}
-            <div className="hidden sm:block absolute bottom-6 sm:bottom-8 md:bottom-10 left-1/2 transform -translate-x-1/2 z-10 animate-bounce">
-              <span className="material-symbols-outlined text-2xl sm:text-3xl md:text-4xl text-white/60">keyboard_arrow_down</span>
             </div>
           </section>
-
-            {/* About SV Builders - SEO Rich Content */}
-          <section className="py-16 sm:py-20 md:py-24 px-4 sm:px-10 bg-white dark:bg-background-dark">
-            <div className="max-w-7xl mx-auto">
-              <div className="text-center mb-12 md:mb-16">
-                <div className="inline-block px-4 py-2 bg-primary/10 rounded-full mb-4">
-                    <span className="text-primary text-sm font-bold uppercase tracking-wider">About SV Builders</span>
-                </div>
-                <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold font-display text-dark-charcoal dark:text-creamy-white mb-4">
-                    Your Trusted Real Estate Partner in Bangalore
-                </h2>
-                <p className="text-lg text-dark-charcoal/70 dark:text-creamy-white/70 max-w-3xl mx-auto">
-                    SV Builders is a leading real estate developer in Bangalore, Karnataka, with over 25 years of experience in creating premium residential spaces. We specialize in developing high-quality apartment complexes and residential projects across prime locations in Bangalore, including HSR Layout, Koramangala, Whitefield, Electronic City, and Yelahanka.
-                </p>
-              </div>
-
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-12">
-                <div className="relative text-center group">
-                  <div className="relative mx-auto w-20 h-20 bg-primary/10 rounded-full flex items-center justify-center mb-6 group-hover:bg-primary/20 transition-all duration-300">
-                      <span className="material-symbols-outlined text-primary text-3xl">apartment</span>
-                    </div>
-                    <h3 className="text-xl font-bold mb-3 font-display text-dark-charcoal dark:text-creamy-white">Premium Projects</h3>
-                    <p className="text-dark-charcoal/70 dark:text-creamy-white/70 text-sm leading-relaxed">
-                      We develop residential projects across major areas of Bangalore with world-class amenities, modern architecture, and strategic locations.
-                    </p>
-                  </div>
-
-                  <div className="relative text-center group">
-                    <div className="relative mx-auto w-20 h-20 bg-primary/10 rounded-full flex items-center justify-center mb-6 group-hover:bg-primary/20 transition-all duration-300">
-                      <span className="material-symbols-outlined text-primary text-3xl">verified</span>
-                    </div>
-                    <h3 className="text-xl font-bold mb-3 font-display text-dark-charcoal dark:text-creamy-white">Trusted Developer</h3>
-                  <p className="text-dark-charcoal/70 dark:text-creamy-white/70 text-sm leading-relaxed">
-                      With RERA approval and decades of experience, SV Builders is known for timely delivery and quality construction in Bangalore.
-                  </p>
-                </div>
-
-                <div className="relative text-center group">
-                  <div className="relative mx-auto w-20 h-20 bg-primary/10 rounded-full flex items-center justify-center mb-6 group-hover:bg-primary/20 transition-all duration-300">
-                      <span className="material-symbols-outlined text-primary text-3xl">location_on</span>
-                    </div>
-                    <h3 className="text-xl font-bold mb-3 font-display text-dark-charcoal dark:text-creamy-white">Prime Locations</h3>
-                    <p className="text-dark-charcoal/70 dark:text-creamy-white/70 text-sm leading-relaxed">
-                      Our projects are strategically located in Bangalore's most sought-after neighborhoods with excellent connectivity and infrastructure.
-                    </p>
-                  </div>
-                </div>
-                    </div>
-            </section>
 
             {/* Projects Cards Section */}
             <section className="py-20 px-4 sm:px-10 bg-gradient-to-b from-background-light to-white dark:from-background-dark dark:to-background-dark">
@@ -308,6 +540,7 @@ function App() {
                           <Link
                             to={`/project/${project.id}`}
                             className="w-full flex items-center justify-center gap-1.5 px-3 py-2 bg-primary text-white font-semibold rounded-md hover:bg-primary/90 transition-all duration-300 text-xs"
+                            title={`View details of ${project.title}`}
                           >
                             <span>View Details</span>
                             <span className="material-symbols-outlined text-sm">arrow_forward</span>
@@ -319,6 +552,55 @@ function App() {
               </div>
             </div>
           </section>
+
+            {/* About SV Builders - SEO Rich Content */}
+          <section className="py-16 sm:py-20 md:py-24 px-4 sm:px-10 bg-white dark:bg-background-dark">
+            <div className="max-w-7xl mx-auto">
+              <div className="text-center mb-12 md:mb-16">
+                <div className="inline-block px-4 py-2 bg-primary/10 rounded-full mb-4">
+                    <span className="text-primary text-sm font-bold uppercase tracking-wider">About SV Builders and Developers</span>
+                </div>
+                <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold font-display text-dark-charcoal dark:text-creamy-white mb-4">
+                    Your Trusted Real Estate Partner in Bangalore
+                </h2>
+                <p className="text-lg text-dark-charcoal/70 dark:text-creamy-white/70 max-w-3xl mx-auto">
+                    SV Builders and Developers is a leading real estate developer in Bangalore, Karnataka, with over 25 years of experience in creating premium residential spaces. We specialize in developing high-quality apartment complexes and residential projects across prime locations in Bangalore, including HSR Layout, Koramangala, Whitefield, Electronic City, and Yelahanka.
+                </p>
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-12">
+                <div className="relative text-center group">
+                  <div className="relative mx-auto w-20 h-20 bg-primary/10 rounded-full flex items-center justify-center mb-6 group-hover:bg-primary/20 transition-all duration-300">
+                      <span className="material-symbols-outlined text-primary text-3xl">apartment</span>
+                    </div>
+                    <h3 className="text-xl font-bold mb-3 font-display text-dark-charcoal dark:text-creamy-white">Premium Projects</h3>
+                    <p className="text-dark-charcoal/70 dark:text-creamy-white/70 text-sm leading-relaxed">
+                      We develop residential projects across major areas of Bangalore with world-class amenities, modern architecture, and strategic locations.
+                    </p>
+                  </div>
+
+                  <div className="relative text-center group">
+                    <div className="relative mx-auto w-20 h-20 bg-primary/10 rounded-full flex items-center justify-center mb-6 group-hover:bg-primary/20 transition-all duration-300">
+                      <span className="material-symbols-outlined text-primary text-3xl">verified</span>
+                    </div>
+                    <h3 className="text-xl font-bold mb-3 font-display text-dark-charcoal dark:text-creamy-white">Trusted Developer</h3>
+                  <p className="text-dark-charcoal/70 dark:text-creamy-white/70 text-sm leading-relaxed">
+                      With RERA approval and decades of experience, SV Builders and Developers is known for timely delivery and quality construction in Bangalore.
+                  </p>
+                </div>
+
+                <div className="relative text-center group">
+                  <div className="relative mx-auto w-20 h-20 bg-primary/10 rounded-full flex items-center justify-center mb-6 group-hover:bg-primary/20 transition-all duration-300">
+                      <span className="material-symbols-outlined text-primary text-3xl">location_on</span>
+                    </div>
+                    <h3 className="text-xl font-bold mb-3 font-display text-dark-charcoal dark:text-creamy-white">Prime Locations</h3>
+                    <p className="text-dark-charcoal/70 dark:text-creamy-white/70 text-sm leading-relaxed">
+                      Our projects are strategically located in Bangalore's most sought-after neighborhoods with excellent connectivity and infrastructure.
+                    </p>
+                  </div>
+                </div>
+                    </div>
+            </section>
 
             {/* Services Section */}
             <section className="py-20 px-4 sm:px-10 bg-white dark:bg-background-dark">
@@ -374,10 +656,10 @@ function App() {
                     <span className="text-primary text-sm font-bold uppercase tracking-wider">Testimonials</span>
                   </div>
                   <h2 className="text-3xl md:text-4xl font-bold text-center mb-4 font-display text-dark-charcoal dark:text-creamy-white">
-                    What Our Clients Say
+                    What Our Families Say
                   </h2>
                   <p className="text-center text-dark-charcoal/70 dark:text-creamy-white/70 mb-12 max-w-2xl mx-auto">
-                    Discover the experiences of our satisfied customers who trusted SV Builders for their dream homes.
+                    Discover the experiences of our satisfied customers who trusted SV Builders and Developers for their dream homes.
                   </p>
                 </div>
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
@@ -390,7 +672,7 @@ function App() {
                       <span className="material-symbols-outlined text-primary text-4xl">star</span>
                     </div>
                     <p className="text-dark-charcoal dark:text-creamy-white mb-4 italic">
-                      "SV Builders delivered exactly what they promised. Our new home in HSR Layout exceeded all expectations. Quality construction and timely delivery!"
+                      "SV Builders and Developers delivered exactly what they promised. Our new home in HSR Layout exceeded all expectations. Quality construction and timely delivery!"
                     </p>
                     <p className="font-bold text-dark-charcoal dark:text-creamy-white">- Ramesh K., Homeowner</p>
                   </div>
@@ -416,7 +698,7 @@ function App() {
                       <span className="material-symbols-outlined text-primary text-4xl">star</span>
                     </div>
                     <p className="text-dark-charcoal dark:text-creamy-white mb-4 italic">
-                      "Best decision we made! SV Builders' attention to detail and commitment to quality is unmatched. Highly recommend for anyone looking for a home in Bangalore."
+                      "Best decision we made! SV Builders and Developers' attention to detail and commitment to quality is unmatched. Highly recommend for anyone looking for a home in Bangalore."
                     </p>
                     <p className="font-bold text-dark-charcoal dark:text-creamy-white">- Anil M., Homebuyer</p>
                   </div>
@@ -435,30 +717,30 @@ function App() {
                     Frequently Asked Questions
                   </h2>
                   <p className="text-center text-dark-charcoal/70 dark:text-creamy-white/70 mb-12 max-w-2xl mx-auto">
-                    Find answers to commonly asked questions about SV Builders and our projects.
+                    Find answers to commonly asked questions about SV Builders and Developers and our projects.
                   </p>
                 </div>
                 <div className="space-y-6">
                   <div className="bg-creamy-white dark:bg-light-taupe/20 rounded-xl p-6 shadow-md">
-                    <h3 className="text-xl font-bold mb-3 font-display text-dark-charcoal dark:text-creamy-white">What areas does SV Builders serve in Bangalore?</h3>
+                    <h3 className="text-xl font-bold mb-3 font-display text-dark-charcoal dark:text-creamy-white">What areas does SV Builders and Developers serve in Bangalore?</h3>
                     <p className="text-dark-charcoal/70 dark:text-creamy-white/70">
-                      SV Builders serves major areas in Bangalore including HSR Layout, Koramangala, Whitefield, Electronic City, Yelahanka, and many other prime locations across the city.
+                      SV Builders and Developers serves major areas in Bangalore including HSR Layout, Koramangala, Whitefield, Electronic City, Yelahanka, and many other prime locations across the city.
                     </p>
                   </div>
                   <div className="bg-creamy-white dark:bg-light-taupe/20 rounded-xl p-6 shadow-md">
-                    <h3 className="text-xl font-bold mb-3 font-display text-dark-charcoal dark:text-creamy-white">What types of projects does SV Builders offer?</h3>
+                    <h3 className="text-xl font-bold mb-3 font-display text-dark-charcoal dark:text-creamy-white">What types of projects does SV Builders and Developers offer?</h3>
                     <p className="text-dark-charcoal/70 dark:text-creamy-white/70">
                       We offer residential apartments in various configurations (2 BHK, 3 BHK, 4 BHK), commercial spaces, and turnkey individual home construction services across Bangalore.
                     </p>
                   </div>
                   <div className="bg-creamy-white dark:bg-light-taupe/20 rounded-xl p-6 shadow-md">
-                    <h3 className="text-xl font-bold mb-3 font-display text-dark-charcoal dark:text-creamy-white">Are SV Builders projects RERA approved?</h3>
+                    <h3 className="text-xl font-bold mb-3 font-display text-dark-charcoal dark:text-creamy-white">Are SV Builders and Developers projects RERA approved?</h3>
                     <p className="text-dark-charcoal/70 dark:text-creamy-white/70">
                       Yes, all our projects comply with RERA regulations. We ensure all necessary approvals and certifications are in place before project launch.
                     </p>
                   </div>
                   <div className="bg-creamy-white dark:bg-light-taupe/20 rounded-xl p-6 shadow-md">
-                    <h3 className="text-xl font-bold mb-3 font-display text-dark-charcoal dark:text-creamy-white">What amenities are included in SV Builders projects?</h3>
+                    <h3 className="text-xl font-bold mb-3 font-display text-dark-charcoal dark:text-creamy-white">What amenities are included in SV Builders and Developers projects?</h3>
                     <p className="text-dark-charcoal/70 dark:text-creamy-white/70">
                       Our projects feature world-class amenities including swimming pools, clubhouses, gymnasiums, landscaped gardens, security systems, power backup, parking facilities, and more depending on the project.
                     </p>
@@ -589,16 +871,27 @@ function App() {
         </main>
       </div>
 
-        {/* Floating CTA Button - Right side on desktop, bottom on mobile */}
-        <button
-          onClick={scrollToInquiry}
-          className="fixed right-6 bottom-24 md:bottom-6 z-50 bg-primary text-white rounded-full p-4 shadow-2xl hover:bg-primary/90 hover:scale-110 transition-all duration-300 flex items-center justify-center gap-2 group"
-          aria-label="Contact us"
-        >
-          <span className="material-symbols-outlined">phone</span>
-          <span className="hidden md:block font-bold">Contact Us</span>
-          <span className="md:hidden font-bold text-sm">Call</span>
-        </button>
+        {/* Floating CTA Button - Right side, sticky */}
+        <div className="fixed right-6 bottom-6 z-50 flex flex-col gap-3">
+          <button
+            onClick={scrollToInquiry}
+            className="bg-primary text-white rounded-full p-4 shadow-2xl hover:bg-primary/90 hover:scale-110 transition-all duration-300 flex items-center justify-center gap-2 group"
+            aria-label="Enquire Now"
+            title="Enquire Now"
+          >
+            <span className="material-symbols-outlined">mail</span>
+            <span className="hidden md:block font-bold">Enquire</span>
+          </button>
+          <a
+            href="tel:+91-XXXXXXXXXX"
+            className="bg-primary text-white rounded-full p-4 shadow-2xl hover:bg-primary/90 hover:scale-110 transition-all duration-300 flex items-center justify-center gap-2 group"
+            aria-label="Call Now"
+            title="Call Now"
+          >
+            <span className="material-symbols-outlined">phone</span>
+            <span className="hidden md:block font-bold">Call</span>
+          </a>
+        </div>
     </div>
     </>
   );

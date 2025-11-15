@@ -81,7 +81,11 @@ function Services() {
                         <p className="text-dark-charcoal/70 dark:text-creamy-white/70 text-base leading-relaxed mb-6">
                           {service.description}
                         </p>
-                        <Link to="/projects" className="inline-flex items-center gap-2 text-primary font-bold hover:gap-4 transition-all w-fit">
+                        <Link 
+                          to={service.category === "RESIDENTIAL" ? "/residential-construction" : service.category === "COMMERCIAL" ? "/commercial-construction" : "/projects"} 
+                          className="inline-flex items-center gap-2 text-primary font-bold hover:gap-4 transition-all w-fit"
+                          title={service.category === "RESIDENTIAL" ? "View residential construction projects" : service.category === "COMMERCIAL" ? "View commercial construction projects" : "View all projects"}
+                        >
                           {service.category === "RESIDENTIAL" ? "Explore Portfolio" : service.category === "COMMERCIAL" ? "View Projects" : "Discover Style"}
                           <span className="material-symbols-outlined">arrow_forward</span>
                         </Link>

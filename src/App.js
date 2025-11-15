@@ -5,6 +5,8 @@ import About from './components/About';
 import Projects from './components/Projects';
 import ProjectDetails from './components/ProjectDetails';
 import Services from './components/Services';
+import ResidentialConstruction from './components/ResidentialConstruction';
+import CommercialConstruction from './components/CommercialConstruction';
 import Blog from './components/Blog';
 import BlogArticle from './components/BlogArticle';
 
@@ -31,6 +33,8 @@ function App() {
         <Route path="/projects" element={<Projects />} />
         <Route path="/project/:id" element={<ProjectDetails />} />
         <Route path="/services" element={<Services />} />
+        <Route path="/residential-construction" element={<ResidentialConstruction />} />
+        <Route path="/commercial-construction" element={<CommercialConstruction />} />
         <Route path="/blog" element={<Blog />} />
         <Route path="/blog/article/:id" element={<BlogArticle />} />
         
