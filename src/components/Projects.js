@@ -1,10 +1,22 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import Navbar from './Navbar';
 import Footer from './Footer';
 import { projects } from '../data/projectsData';
 
 function Projects() {
+  // State for project filter
+  const [projectFilter, setProjectFilter] = useState('all');
+  
+  // Filter projects based on selected filter
+  const getFilteredProjects = () => {
+    if (projectFilter === 'all') return projects;
+    if (projectFilter === 'ready-to-move') return projects.filter(p => p.status === 'completed');
+    if (projectFilter === 'ongoing') return projects.filter(p => p.status === 'ongoing');
+    if (projectFilter === 'upcoming') return projects.filter(p => p.status === 'upcoming');
+    if (projectFilter === 'completed') return projects.filter(p => p.status === 'completed');
+    return projects;
+  };
 
   return (
     <div className="relative w-full flex flex-col group/design-root overflow-x-hidden bg-background-light dark:bg-background-dark font-body text-dark-charcoal dark:text-creamy-white">
@@ -14,7 +26,7 @@ function Projects() {
           {/* Hero Section */}
           <section className="relative h-[400px] sm:h-[500px] md:h-[600px] w-full flex items-center justify-center text-white overflow-hidden">
             <div className="absolute inset-0 bg-gradient-to-b from-black/50 via-black/40 to-black/60 z-[1]"></div>
-            <div className="absolute inset-0 w-full h-full bg-center bg-no-repeat bg-cover" style={{ backgroundImage: `url("https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=1920&q=100")` }}></div>
+            <div className="absolute inset-0 w-full h-full bg-center bg-no-repeat bg-cover" style={{ backgroundImage: `url("https://tse1.explicit.bing.net/th/id/OIP.iD9gsM0RC59KntwNSEzlWAHaEK?rs=1&pid=ImgDetMain&o=7&rm=3")` }}></div>
             
             <div className="relative z-10 flex flex-col items-center justify-center gap-6 sm:gap-8 px-4 sm:px-6 md:px-8 w-full max-w-4xl mx-auto animate-fade-in py-8 sm:py-12">
               <div className="text-center space-y-3 sm:space-y-4 w-full">
@@ -46,16 +58,63 @@ function Projects() {
                 </p>
               </div>
 
-              {/* Tabs */}
-              <div className="flex flex-wrap justify-center border-b border-light-taupe/50 dark:border-creamy-white/20 mb-12 px-2 gap-2 sm:gap-4">
-                <button className="pb-3 sm:pb-4 px-3 sm:px-6 text-sm sm:text-base font-bold text-primary border-b-2 border-primary transition-colors">
+              {/* Filter Widgets - Casagrand Style */}
+              <div className="flex flex-wrap justify-center gap-3 mb-12 px-2">
+                <button
+                  onClick={() => setProjectFilter('all')}
+                  className={`px-6 py-3 rounded-lg font-semibold text-sm md:text-base transition-all duration-300 ${
+                    projectFilter === 'all'
+                      ? 'bg-primary text-white shadow-lg scale-105'
+                      : 'bg-white dark:bg-light-taupe/20 text-dark-charcoal dark:text-creamy-white hover:bg-primary/10 border-2 border-primary/20'
+                  }`}
+                >
                   All Projects
+                </button>
+                <button
+                  onClick={() => setProjectFilter('ready-to-move')}
+                  className={`px-6 py-3 rounded-lg font-semibold text-sm md:text-base transition-all duration-300 ${
+                    projectFilter === 'ready-to-move'
+                      ? 'bg-green-600 text-white shadow-lg scale-105'
+                      : 'bg-white dark:bg-light-taupe/20 text-dark-charcoal dark:text-creamy-white hover:bg-green-600/10 border-2 border-green-600/20'
+                  }`}
+                >
+                  Ready to Move
+                </button>
+                <button
+                  onClick={() => setProjectFilter('ongoing')}
+                  className={`px-6 py-3 rounded-lg font-semibold text-sm md:text-base transition-all duration-300 ${
+                    projectFilter === 'ongoing'
+                      ? 'bg-blue-600 text-white shadow-lg scale-105'
+                      : 'bg-white dark:bg-light-taupe/20 text-dark-charcoal dark:text-creamy-white hover:bg-blue-600/10 border-2 border-blue-600/20'
+                  }`}
+                >
+                  Ongoing
+                </button>
+                <button
+                  onClick={() => setProjectFilter('upcoming')}
+                  className={`px-6 py-3 rounded-lg font-semibold text-sm md:text-base transition-all duration-300 ${
+                    projectFilter === 'upcoming'
+                      ? 'bg-orange-600 text-white shadow-lg scale-105'
+                      : 'bg-white dark:bg-light-taupe/20 text-dark-charcoal dark:text-creamy-white hover:bg-orange-600/10 border-2 border-orange-600/20'
+                  }`}
+                >
+                  Upcoming
+                </button>
+                <button
+                  onClick={() => setProjectFilter('completed')}
+                  className={`px-6 py-3 rounded-lg font-semibold text-sm md:text-base transition-all duration-300 ${
+                    projectFilter === 'completed'
+                      ? 'bg-green-600 text-white shadow-lg scale-105'
+                      : 'bg-white dark:bg-light-taupe/20 text-dark-charcoal dark:text-creamy-white hover:bg-green-600/10 border-2 border-green-600/20'
+                  }`}
+                >
+                  Completed
                 </button>
               </div>
 
               {/* Projects Grid */}
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-                {projects.map((project) => (
+                {getFilteredProjects().map((project) => (
                   <div key={project.id} className="flex flex-col gap-4 rounded-xl bg-creamy-white dark:bg-light-taupe/20 shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2 overflow-hidden group">
                     <div className="relative">
                       <div 
@@ -69,7 +128,7 @@ function Projects() {
                           project.status === 'ongoing' ? 'bg-blue-600' :
                           'bg-orange-600'
                         }`}>
-                          {project.status === 'completed' ? 'Completed' :
+                          {project.status === 'completed' ? 'Ready to Move' :
                            project.status === 'ongoing' ? 'Ongoing' :
                            'Upcoming'}
                         </span>

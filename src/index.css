@@ -2,15 +2,59 @@
 @tailwind components;
 @tailwind utilities;
 
+html {
+  margin: 0;
+  padding: 0;
+}
+
+* {
+  font-family: 'Montserrat', sans-serif;
+}
+
 body {
   margin: 0;
+  padding: 0;
   font-family: 'Montserrat', sans-serif;
+  font-size: 1rem;
+  line-height: 1.6;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
 h1, h2, h3, h4, h5, h6 {
   font-family: 'Montserrat', sans-serif;
+  font-weight: 700;
+  line-height: 1.3;
+}
+
+h1 {
+  font-size: 2.25rem;
+}
+
+h2 {
+  font-size: 1.875rem;
+}
+
+h3 {
+  font-size: 1.5rem;
+}
+
+h4 {
+  font-size: 1.25rem;
+}
+
+h5 {
+  font-size: 1.125rem;
+}
+
+h6 {
+  font-size: 1rem;
+}
+
+p {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 1rem;
+  line-height: 1.6;
 }
 
 .prose {
@@ -211,3 +255,6 @@ body {
     transform: translateY(0);
   }
 }
+
+/* Floating Inquiry and Call Buttons - Always visible at bottom right */
+/* These buttons are fixed to viewport and remain visible during scroll */

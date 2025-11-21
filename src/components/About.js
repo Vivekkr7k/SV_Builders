@@ -6,6 +6,14 @@ import Footer from './Footer';
 function About() {
   const [searchValue, setSearchValue] = useState('');
 
+  const handleEnquiryClick = () => {
+    if (window.location.pathname === '/') {
+      document.getElementById('inquiry-form')?.scrollIntoView({ behavior: 'smooth' });
+    } else {
+      window.location.href = '/#inquiry-form';
+    }
+  };
+
   const team = [
     {
       name: "John Doe",
@@ -58,31 +66,29 @@ function About() {
     <div className="relative w-full flex flex-col group/design-root overflow-x-hidden bg-background-light dark:bg-background-dark font-body text-text-light dark:text-text-dark">
       <Navbar />
       <div className="layout-container flex h-full grow flex-col">
-        <div className="px-4 sm:px-6 md:px-10 lg:px-20 flex flex-1 justify-center py-4 sm:py-5">
-          <div className="layout-content-container flex flex-col max-w-[960px] flex-1 w-full">
-            {/* Hero Section */}
-            <div className="w-full mb-8 sm:mb-12">
-              <div className="flex min-h-[300px] sm:min-h-[400px] md:min-h-[480px] flex-col gap-4 sm:gap-6 bg-cover bg-center bg-no-repeat rounded-xl items-center justify-center p-6 sm:p-8 md:p-12" style={{
-                backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.2) 0%, rgba(0, 0, 0, 0.5) 100%), url("https://lh3.googleusercontent.com/aida-public/AB6AXuAlKwmM5mf40VMFvEEz1w3pdLpSHTgVPKFGeFf_Xlv50GDv9qORa1RV4Z63tewwnG7liVCpRDr4DTOwuXLv2j4bSd2jP1kDa8wyKoctcbXAlAwHbVQvQZI6dQVQNBHRBV9ILXszGsgea7Y1PQQh1hm6_x0hMwgzLk53DuzfoEmv2QxKZ1YSo88F_rmR2k97ADzBVNVkaPZsqUTMuanL3Xgy18B6WUQ-TVMqlM0z2armbzAXD0VKWMLy59FzoG11yjt8jBGn-rmnKm0")`
-              }}>
-                <div className="flex flex-col gap-2 sm:gap-3 text-center px-2">
-                  <h1 className="text-white text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-display font-bold leading-tight tracking-tight">
-                    About SV Builders and Developers
-                  </h1>
-                  <h2 className="text-white text-sm sm:text-base md:text-lg font-body font-normal leading-normal">
-                    Leading real estate developer in Bangalore with 25+ years of excellence in creating premium residential spaces.
-                  </h2>
+        <main>
+          {/* Hero Section - Matching Projects/Blog Design */}
+          <section className="relative h-[400px] sm:h-[500px] md:h-[600px] w-full flex items-center justify-center text-white overflow-hidden">
+            <div className="absolute inset-0 bg-gradient-to-b from-black/50 via-black/40 to-black/60 z-[1]"></div>
+            <div className="absolute inset-0 w-full h-full bg-center bg-no-repeat bg-cover" style={{ backgroundImage: `url("https://wallpaperaccess.com/full/1899360.jpg")` }}></div>
+            
+            <div className="relative z-10 flex flex-col items-center justify-center gap-6 sm:gap-8 px-4 sm:px-6 md:px-8 w-full max-w-4xl mx-auto animate-fade-in py-8 sm:py-12">
+              <div className="text-center space-y-3 sm:space-y-4 w-full">
+                <div className="inline-block px-3 py-1.5 sm:px-4 sm:py-2 bg-white/10 backdrop-blur-md rounded-full border border-white/20 mb-2 sm:mb-3">
+                  <span className="text-xs sm:text-sm font-semibold uppercase tracking-wider text-white">About SV Builders</span>
                 </div>
-                <div className="flex flex-col sm:flex-row gap-3 justify-center w-full px-4 max-w-2xl">
-                  <Link to="/services" className="flex w-full sm:w-auto sm:min-w-[120px] cursor-pointer items-center justify-center overflow-hidden rounded-lg sm:rounded-xl h-11 sm:h-12 md:h-14 px-5 sm:px-6 md:px-8 bg-primary text-white text-sm sm:text-base font-bold hover:bg-primary/90 hover:scale-105 transition-all duration-300 shadow-lg hover:shadow-2xl">
-                    <span className="truncate">Contact Us</span>
-                  </Link>
-                  <Link to="/projects" className="flex w-full sm:w-auto sm:min-w-[120px] cursor-pointer items-center justify-center overflow-hidden rounded-lg sm:rounded-xl h-11 sm:h-12 md:h-14 px-5 sm:px-6 md:px-8 bg-white/90 text-dark-charcoal text-sm sm:text-base font-bold hover:bg-white hover:scale-105 transition-all duration-300 shadow-lg hover:shadow-2xl">
-                    <span className="truncate">View Portfolio</span>
-                  </Link>
-                </div>
+                <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-display font-bold text-center leading-tight drop-shadow-2xl px-2">
+                  Your Trusted <span className="text-white font-extrabold">Construction Partner</span>
+                </h1>
+                <p className="text-sm sm:text-base md:text-lg text-white/90 font-light mt-2 sm:mt-3 max-w-2xl mx-auto px-2">
+                  Leading real estate developer in Bangalore with 25+ years of excellence in creating premium residential spaces.
+                </p>
               </div>
             </div>
+          </section>
+
+          <div className="px-4 sm:px-6 md:px-10 lg:px-20 flex flex-1 justify-center py-4 sm:py-5">
+            <div className="layout-content-container flex flex-col max-w-[960px] flex-1 w-full">
 
             {/* Timeline Section */}
             <div className="py-6 sm:py-8 md:py-10 mb-8 sm:mb-12">
@@ -250,6 +256,7 @@ function About() {
             </div>
           </div>
         </div>
+        </main>
       </div>
       <Footer />
     </div>

@@ -9,6 +9,7 @@ import ResidentialConstruction from './components/ResidentialConstruction';
 import CommercialConstruction from './components/CommercialConstruction';
 import Blog from './components/Blog';
 import BlogArticle from './components/BlogArticle';
+import StickyInquiryButton from './components/StickyInquiryButton';
 
 // Admin Components
 import AdminLogin from './components/admin/AdminLogin';
@@ -102,6 +103,7 @@ function App() {
   return (
     <Router>
       <ScrollToTop />
+      <StickyInquiryButton />
       <PageTransition>
         <Routes>
           {/* Public Routes */}
